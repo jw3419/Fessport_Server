@@ -98,7 +98,9 @@ describe('Testing AuthService', () => {
 
         authService.users.findOne = jest.fn().mockReturnValue(Promise.resolve(userData));
 
-        await expect(authService.signup(userData)).rejects.toMatchObject(new HttpException(400, `User with email ${userData.email} already exists`));
+        await expect(authService.signup(userData)).rejects.toMatchObject(
+          new HttpException(400, `User with email ${userData.email} already exists`),
+        );
       });
     });
 

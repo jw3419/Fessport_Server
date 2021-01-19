@@ -1,5 +1,5 @@
 import HttpException from '../exceptions/HttpException';
-import { Wishlist } from '../interfaces/wishlists.interface';
+//import { Wishlist } from '../interfaces/wishlists.interface';
 import wishlistModel from '../models/wishlists.model';
 import { User } from '../interfaces/users.interface';
 import userModel from '../models/users.model';

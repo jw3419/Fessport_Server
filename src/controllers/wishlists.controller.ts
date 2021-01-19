@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Wishlist } from '../interfaces/wishlists.interface';
+//import { Wishlist } from '../interfaces/wishlists.interface';
 import { User } from '../interfaces/users.interface';
 import wishlistService from '../services/wishlists.service';
 
