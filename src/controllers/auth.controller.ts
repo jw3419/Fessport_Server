@@ -22,7 +22,7 @@ class AuthController {
     const userData: CreateUserDto = req.body;
 
     try {
-      const { cookie, findUser } = await this.authService.login(userData);
+      const { cookie, findUser } = await this.authService.login(userData); // services의 login 함수를 통해 cookie와 user 정보를 받아온다.
       res.setHeader('Set-Cookie', [cookie]);
       res.status(200).json({ data: findUser, message: 'login' });
     } catch (error) {
