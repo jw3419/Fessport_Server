@@ -5,6 +5,6 @@ export interface Wishlist {
   _id: string;
   festivals?: Festival[];
   artists?: Artist[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

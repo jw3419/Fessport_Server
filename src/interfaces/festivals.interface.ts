@@ -1,6 +1,7 @@
 import { Genre } from './genres.interface';
 import { Country } from './countries.interface';
 import { Artist } from './artists.interface';
+import { Types } from 'mongoose';
 
 export interface Festival {
   _id: string;
@@ -13,9 +14,9 @@ export interface Festival {
   poster: string;
   homepage: string;
   stamp: string;
-  genre: Genre;
-  country: Country;
-  artists: Artist[];
-  createdAt: Date;
-  updatedAt: Date;
+  genre: Types.ObjectId | Genre;
+  country: Types.ObjectId | Country;
+  artists: Types.ObjectId[] | Artist[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

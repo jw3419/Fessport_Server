@@ -9,6 +9,6 @@ export interface Artist {
   video: string;
   genre: Genre;
   festivals: Festival[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
