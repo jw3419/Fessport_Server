@@ -3,7 +3,11 @@ import { Country } from './countries.interface';
 import { Artist } from './artists.interface';
 import { Types } from 'mongoose';
 
-export interface Festival {
+interface MongoResult {
+  _doc: any;
+}
+
+export interface Festival extends MongoResult {
   _id: string;
   name: string;
   description: string;
