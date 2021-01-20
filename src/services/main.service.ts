@@ -31,13 +31,12 @@ class MainService {
     });
   }
 
-  // 이 함수를 다른 곳에서 쓸 일이 없다면 private으로,
+  // 이 함수들을 다른 곳에서 쓸 일이 없다면 private으로,
   public async findAllFestival() {
     const festivals = await this.festivals.find();
     return festivals;
   }
 
-  // 다른 곳에서 쓸 일이 있을 것 같다.
   public async findAllCountry() {
     const countries = await this.countries.find();
     return countries;
