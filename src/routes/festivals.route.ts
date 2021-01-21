@@ -4,7 +4,7 @@ import authMiddleware from '../middlewares/auth.middleware';
 import FestivalsController from '../controllers/festivals.controller';
 
 class FestivalsRoute implements Route {
-  public path = '/festivals';
+  public path = '/festival';
   public router = Router();
   public festivalsController = new FestivalsController();
 

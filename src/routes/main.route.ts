@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import MainController from '../controllers/main.controller';
-//import { CreateUserDto } from '../dtos/users.dto';
 import Route from '../interfaces/routes.interface';
 
 class MainRoute implements Route {
