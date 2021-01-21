@@ -1,4 +1,4 @@
-import { Festival } from '../interfaces/festivals.interface';
+//import { Festival } from '../interfaces/festivals.interface';
 import festivalModel from '../models/festivals.model';
 import genreModel from '../models/genres.model';
 import countryModel from '../models/countries.model';
