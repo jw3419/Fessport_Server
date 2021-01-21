@@ -1,13 +1,15 @@
 import festivalModel from '../models/festivals.model';
 import countryModel from '../models/countries.model';
+import { Country } from '../interfaces/countries.interface';
+import { Festival } from '../interfaces/festivals.interface';
 
 class MainService {
   public festivals = festivalModel;
   public countries = countryModel;
 
-  public async mainMap() {
-    const allFestival = await this.findAllFestival();
-    const allCountry = await this.findAllCountry();
+  public async mainMap(): Promise<Country[]> {
+    const allFestival: Festival[] = await this.findAllFestival();
+    const allCountry: Country[] = await this.findAllCountry();
 
     return allCountry.map(countryObj => {
       const festivals = [];
@@ -31,35 +33,15 @@ class MainService {
     });
   }
 
-  // 이 함수들을 다른 곳에서 쓸 일이 없다면 private으로,
-  public async findAllFestival() {
-    const festivals = await this.festivals.find();
+  public async findAllFestival(): Promise<Festival[]> {
+    const festivals: Festival[] = await this.festivals.find();
     return festivals;
   }
 
-  public async findAllCountry() {
-    const countries = await this.countries.find();
+  public async findAllCountry(): Promise<Country[]> {
+    const countries: Country[] = await this.countries.find();
     return countries;
   }
 }
 
 export default MainService;
-
-/*
-const countries = await this.findAllCountry();
-    const result = () => {
-      return countries.map(async value => {
-        const festivals = await this.festivals.find({ country: value._id }).limit(2);
-        return {
-          _id: value._id,
-          name: value.name,
-          y: value.y,
-          x: value.x,
-          flagImage: value.flagImage,
-          festivals,
-        };
-      });
-    };
-    console.log(result());
-  }
-  */
