@@ -7,7 +7,7 @@ class MainController {
   public getMaps = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const getMainMaps = await this.mainService.mainMap();
-      res.status(200).json({ data: getMainMaps, message: 'main map' });
+      res.status(200).json(getMainMaps);
     } catch (error) {
       next(error);
     }

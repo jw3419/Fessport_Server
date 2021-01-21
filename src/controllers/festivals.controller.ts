@@ -10,7 +10,7 @@ class FestivalsController {
     try {
       const findAllFestivalsData = await this.festivalService.findAllFestival();
       console.log(findAllFestivalsData);
-      res.status(200).json({ data: findAllFestivalsData, message: 'findAll' });
+      res.status(200).json(findAllFestivalsData);
     } catch (error) {
       next(error);
     }
@@ -18,12 +18,10 @@ class FestivalsController {
 
   public getFestivalByCountryId = async (req: Request, res: Response, next: NextFunction) => {
     const countryId = req.params.id;
-    console.log('controller : ', countryId);
-    console.log('controller : ', typeof countryId);
 
     try {
       const findFestivalsData = await this.festivalService.findFestivalByCountryId(countryId);
-      res.status(200).json({ data: findFestivalsData, message: 'findAll by CountryId' });
+      res.status(200).json(findFestivalsData);
     } catch (error) {
       next(error);
     }
@@ -35,7 +33,7 @@ class FestivalsController {
 
     try {
       const findOneFestivalDetailData = await this.festivalService.createFestivalDetailData(festivalId, userData);
-      res.status(200).json({ data: findOneFestivalDetailData, message: 'findOne' });
+      res.status(200).json(findOneFestivalDetailData);
     } catch (error) {
       next(error);
     }

@@ -10,7 +10,7 @@ class WishlistsController {
 
     try {
       const findWishlist: User = await this.wishlistService.findAllWishlist(userId);
-      res.status(200).json({ data: findWishlist, message: 'findAll' });
+      res.status(200).json(findWishlist);
     } catch (error) {
       next(error);
     }
