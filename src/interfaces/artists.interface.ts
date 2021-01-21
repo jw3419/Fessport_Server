@@ -4,11 +4,11 @@ import { Festival } from './festivals.interface';
 export interface Artist {
   _id: string;
   name: string;
-  description: string;
-  image: string;
-  video: string;
-  genre: Genre;
-  festivals: Festival[];
+  description?: string;
+  image?: string;
+  video?: string;
+  genre?: string | Genre;
+  festivals?: string[] | Festival[];
   createdAt?: Date;
   updatedAt?: Date;
 }

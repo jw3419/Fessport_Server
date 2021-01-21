@@ -17,10 +17,18 @@ const userSchema: Schema = new Schema({
   image: {
     type: String,
   },
-  wishlists: {
-    type: Schema.Types.ObjectId,
-    ref: 'Wishlist',
-  },
+  wishFestivals: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Festival',
+    },
+  ],
+  wishArtists: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Artist',
+    },
+  ],
   badges: [
     {
       type: Schema.Types.ObjectId,

@@ -22,7 +22,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
         next(new HttpException(401, 'Wrong authentication token'));
       }
     } else {
-      if (req.url.includes('/festivals/detail')) next();
+      if (req.url.includes('/festival/detail')) next();
       else next(new HttpException(404, 'Authentication token missing'));
     }
   } catch (error) {

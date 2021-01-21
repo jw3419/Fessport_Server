@@ -2,17 +2,14 @@ import { Festival } from '../interfaces/festivals.interface';
 import festivalModel from '../models/festivals.model';
 import genreModel from '../models/genres.model';
 import countryModel from '../models/countries.model';
-import userModel from '../models/users.model';
-import wishlistModel from '../models/wishlists.model';
 import { User } from '../interfaces/users.interface';
-import { Wishlist } from '../interfaces/wishlists.interface';
+import { isEmpty } from '../utils/util';
+import HttpException from '../exceptions/HttpException';
 
 class FestivalService {
   public festivals = festivalModel;
   public country = countryModel;
   public genre = genreModel;
-  public users = userModel;
-  public wishlists = wishlistModel;
 
   public async findAllFestival(): Promise<Festival[]> {
     const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre', 'genre');
@@ -20,6 +17,8 @@ class FestivalService {
   }
 
   public async findFestivalByCountryId(countryId: string): Promise<Festival[]> {
+    if (isEmpty(countryId)) throw new HttpException(400, 'error');
+
     const findFestivals: Festival[] = await this.festivals
       .find({ country: countryId }, 'name poster genre')
       .populate('genre', 'genre');
@@ -27,17 +26,24 @@ class FestivalService {
   }
 
   public async findOneFestivalById(festivalId: string): Promise<Festival> {
+    if (isEmpty(festivalId)) throw new HttpException(400, 'error');
+
     const festival: Festival = await this.festivals
       .findById(festivalId, 'name description artists startDate endDate video poster homepage genre country')
       .populate('genre')
       .populate('country');
+    if (!festival) throw new HttpException(409, 'error');
     return festival;
   }
 
   public async createFestivalDetailData(festivalId: string, userData: User): Promise<Festival> {
+    if (!festivalId) throw new HttpException(400, 'error');
+
     const festivalDetail: Festival = await this.findOneFestivalById(festivalId);
+    if (!festivalDetail) throw new HttpException(409, 'error');
+
     // userData가 없다는 것은 로그인 및 인증을 거치지 않은 사용자
-    if (!userData) {
+    if (isEmpty(userData)) {
       return {
         ...festivalDetail._doc,
         // 구현 필요
@@ -48,17 +54,11 @@ class FestivalService {
     }
 
     let isLiked = false;
-    if (userData.wishlists) {
-      // 꼭 이렇게 구현해야하는가?!
-      const wishlist: Wishlist = await this.wishlists.findOne({ _id: userData.wishlists }, 'festivals');
-
-      // 위시리스트 컬렉션을 다 뒤져보니 user의 위시리스트가 있고, 그 내부 festivals 필드(배열)에 무언가 값이 존재한다
-      if (wishlist.festivals.length) {
-        for (let i = 0; i < wishlist.festivals.length; i++) {
-          if (String(festivalId) === String(wishlist.festivals[i])) {
-            isLiked = true;
-            break;
-          }
+    if (userData.wishFestivals.length) {
+      for (let i = 0; i < userData.wishFestivals.length; i++) {
+        if (String(festivalId) === String(userData.wishFestivals[i])) {
+          isLiked = true;
+          break;
         }
       }
     }

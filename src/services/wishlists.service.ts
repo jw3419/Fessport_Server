@@ -1,11 +1,11 @@
 import HttpException from '../exceptions/HttpException';
 //import { Wishlist } from '../interfaces/wishlists.interface';
-import wishlistModel from '../models/wishlists.model';
+//import wishlistModel from '../models/wishlists.model';
 import { User } from '../interfaces/users.interface';
 import userModel from '../models/users.model';
 
 class WishlistService {
-  public wishlists = wishlistModel;
+  //public wishlists = wishlistModel;
   public users = userModel;
 
   public async findAllWishlist(userId: string) {

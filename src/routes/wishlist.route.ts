@@ -3,7 +3,7 @@ import WishlistsController from '../controllers/wishlists.controller';
 import Route from '../interfaces/routes.interface';
 //import authMiddleware from '../middlewares/auth.middleware';
 
-class WishlistsRoute implements Route {
+class WishlistRoute implements Route {
   public path = '/wishlist';
   public router = Router();
   public WishlistsController = new WishlistsController();
@@ -17,4 +17,4 @@ class WishlistsRoute implements Route {
   }
 }
 
-export default WishlistsRoute;
+export default WishlistRoute;
