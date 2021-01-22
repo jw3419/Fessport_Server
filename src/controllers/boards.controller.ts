@@ -1,10 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 import { Board } from '../interfaces/boards.interface';
+import { Festival } from '../interfaces/festivals.interface';
 import { User } from '../interfaces/users.interface';
 import boardService from '../services/boards.service';
 
 class BoardsController {
   public boardService = new boardService();
+
+  public getFestivalCategories = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const festivalCategoryData: Festival[] = await this.boardService.findAllFestivalCategory();
+      res.status(200).json(festivalCategoryData);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public createBoard = async (req: Request, res: Response, next: NextFunction) => {
     const boardData: Board = req.body;

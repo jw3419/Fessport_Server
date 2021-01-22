@@ -4,11 +4,16 @@ import { Board } from '../interfaces/boards.interface';
 import { User } from '../interfaces/users.interface';
 import boardModel from '../models/boards.model';
 import festivalModel from '../models/festivals.model';
+import { Festival } from '../interfaces/festivals.interface';
 
 class BoardService {
   public boards = boardModel;
-  public festival = festivalModel;
+  public festivals = festivalModel;
 
+  public async findAllFestivalCategory(): Promise<Festival[]> {
+    const festivalCategories: Festival[] = await this.festivals.find({}, 'name');
+    return festivalCategories;
+  }
   public async createBoard(data: Board, userData: User): Promise<Board> {
     if (isEmpty(data)) throw new HttpException(400, "It's not a board data");
 
