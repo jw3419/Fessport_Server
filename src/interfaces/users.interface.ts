@@ -4,7 +4,7 @@ import { Festival } from './festivals.interface';
 import { Board } from './boards.interface';
 
 export interface User {
-  _id: string;
+  _id?: string;
   email: string;
   password: string;
   nickname?: string;
@@ -13,6 +13,6 @@ export interface User {
   badges?: Badge[];
   visits?: Festival[];
   boards?: Board[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

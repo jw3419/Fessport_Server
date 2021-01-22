@@ -39,6 +39,17 @@ class BoardsController {
       next(error);
     }
   };
+
+  public deleteBoard = async (req: Request, res: Response, next: NextFunction) => {
+    const postId = req.body.postId;
+
+    try {
+      const deleteBoardData: Board = await this.boardService.deleteBoard(postId);
+      res.status(201).json(deleteBoardData);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default BoardsController;

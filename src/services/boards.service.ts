@@ -54,6 +54,13 @@ class BoardService {
 
     return updateBoardData;
   }
+
+  public async deleteBoard(postId: string): Promise<Board> {
+    const deleteBoardData: Board = await this.boards.findByIdAndDelete(postId);
+
+    if (!deleteBoardData) throw new HttpException(409, 'Fail to delete');
+    return deleteBoardData;
+  }
 }
 
 export default BoardService;

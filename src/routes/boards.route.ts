@@ -14,8 +14,9 @@ class BoardsRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}/list/:postCategoryId`, this.boardsController.findBoardList);
-    this.router.post(`${this.path}/post`, authMiddleware, this.boardsController.createBoard);
+    this.router.post(`${this.path}/create`, authMiddleware, this.boardsController.createBoard);
     this.router.post(`${this.path}/edit`, this.boardsController.updateBoard);
+    this.router.post(`${this.path}/delete`, this.boardsController.deleteBoard);
   }
 }
 
