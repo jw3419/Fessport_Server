@@ -2,7 +2,7 @@ import { model, Schema, Document } from 'mongoose';
 import { Genre } from '../interfaces/genres.interface';
 
 const genreSchema: Schema = new Schema({
-  genre: {
+  name: {
     type: String,
     required: true,
   },

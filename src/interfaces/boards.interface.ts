@@ -13,6 +13,6 @@ export interface Board {
   postCategory: PostCategory; // 동행이니? 리셀이니? 후기니?
   comments?: Comment[]; // 댓글들
   participants?: User[]; // 이 게시물에 같이 가는 사람들
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

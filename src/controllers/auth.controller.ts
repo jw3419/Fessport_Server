@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { CreateUserDto } from '../dtos/users.dto';
+import { CreateUserDto, LoginUserDto } from '../dtos/users.dto';
 import AuthService from '../services/auth.service';
 import { User } from '../interfaces/users.interface';
 import { RequestWithUser } from '../interfaces/auth.interface';
@@ -12,19 +12,19 @@ class AuthController {
 
     try {
       const signUpUserData: User = await this.authService.signup(userData);
-      res.status(201).json({ data: signUpUserData, message: 'signup' });
+      res.status(201).json(signUpUserData);
     } catch (error) {
       next(error);
     }
   };
 
   public logIn = async (req: Request, res: Response, next: NextFunction) => {
-    const userData: CreateUserDto = req.body;
+    const userData: LoginUserDto = req.body;
 
     try {
-      const { cookie, findUser } = await this.authService.login(userData);
+      const { cookie, findUser } = await this.authService.login(userData); // services의 login 함수를 통해 cookie와 user 정보를 받아온다.
       res.setHeader('Set-Cookie', [cookie]);
-      res.status(200).json({ data: findUser, message: 'login' });
+      res.status(200).json(findUser);
     } catch (error) {
       next(error);
     }
@@ -36,7 +36,7 @@ class AuthController {
     try {
       const logOutUserData: User = await this.authService.logout(userData);
       res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
-      res.status(200).json({ data: logOutUserData, message: 'logout' });
+      res.status(200).json(logOutUserData);
     } catch (error) {
       next(error);
     }

@@ -4,6 +4,6 @@ export interface Country {
   y: number;
   x: number;
   flagImage: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

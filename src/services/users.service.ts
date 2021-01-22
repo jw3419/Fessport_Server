@@ -20,6 +20,23 @@ class UserService {
     return findUser;
   }
 
+  public async findWishlist(userId: string): Promise<User> {
+    const findWishlist: User = await this.users
+      .findOne({ _id: userId }, 'wishArtists wishFestivals')
+      .populate('wishArtists', 'name image')
+      .populate('wishFestivals', 'name poster'); // festivals, artists service에서 public으로 모델 불러오기 때문에 참조 가능
+    if (!findWishlist) throw new HttpException(409, 'error');
+    return findWishlist;
+  }
+
+  public async findFessport(userId: string): Promise<User> {
+    const findFessport: User = await this.users
+      .findOne({ _id: userId }, 'email nickname image visits badges')
+      .populate('visits', 'poster')
+      .populate('badges');
+    return findFessport;
+  }
+
   public async createUser(userData: CreateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
 

@@ -1,6 +1,6 @@
-import { Wishlist } from './wishlists.interface';
 import { Badge } from './badges.interface';
 import { Festival } from './festivals.interface';
+import { Artist } from './artists.interface';
 import { Board } from './boards.interface';
 
 export interface User {
@@ -9,10 +9,11 @@ export interface User {
   password: string;
   nickname?: string;
   image?: string;
-  wishlists?: Wishlist;
-  badges?: Badge[];
-  visits?: Festival[];
-  boards?: Board[];
-  createdAt: Date;
-  updatedAt: Date;
+  wishFestivals?: string[] | Festival[];
+  wishArtists?: string[] | Artist[];
+  badges?: string[] | Badge[];
+  visits?: string[] | Festival[];
+  boards?: string[] | Board[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
