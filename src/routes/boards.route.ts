@@ -1,0 +1,21 @@
+import { Router } from 'express';
+import BoardsController from '../controllers/boards.controller';
+import Route from '../interfaces/routes.interface';
+import authMiddleware from '../middlewares/auth.middleware';
+
+class BoardsRoute implements Route {
+  public path = '/board';
+  public router = Router();
+  public boardsController = new BoardsController();
+
+  constructor() {
+    this.initializeRoutes();
+  }
+
+  private initializeRoutes() {
+    this.router.get(`${this.path}/list/:postCategoryId`, this.boardsController.findBoard);
+    this.router.post(`${this.path}/post`, authMiddleware, this.boardsController.createBoard);
+  }
+}
+
+export default BoardsRoute;
