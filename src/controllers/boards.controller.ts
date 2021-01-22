@@ -1,3 +1,4 @@
+import { RequestWithUser } from '../interfaces/auth.interface';
 import { NextFunction, Request, Response } from 'express';
 import { Board } from '../interfaces/boards.interface';
 import { Festival } from '../interfaces/festivals.interface';
@@ -27,7 +28,7 @@ class BoardsController {
     }
   };
 
-  public createBoard = async (req: Request, res: Response, next: NextFunction) => {
+  public createBoard = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const boardData: Board = req.body;
     const userData: User = req.user;
 

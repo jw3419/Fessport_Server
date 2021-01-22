@@ -13,6 +13,7 @@ class BoardsRoute implements Route {
   }
 
   private initializeRoutes() {
+    this.router.get(`${this.path}/list`, this.commentsController.getComments);
     this.router.post(`${this.path}/create`, authMiddleware, this.commentsController.createComment);
   }
 }

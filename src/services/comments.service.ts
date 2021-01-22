@@ -11,6 +11,18 @@ class CommentService {
   public comments = commentModel;
   public boards = boardModel;
 
+  public async findAllComment(postId): Promise<(string | Comment)[]> {
+    const findBoardData: Board = await this.boards
+      .findById(postId)
+      .populate({
+        path: 'comments',
+        select: 'description user createdAt updatedAt',
+        populate: { path: 'user', select: 'email' },
+      });
+
+    return findBoardData.comments;
+  }
+
   public async createComment(commentData: Comment, userData: User): Promise<Comment> {
     if (isEmpty(commentData)) throw new HttpException(400, "It's not a comment data");
     const { board, description } = commentData;
