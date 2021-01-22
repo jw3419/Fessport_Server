@@ -4,9 +4,13 @@ import HttpException from '../exceptions/HttpException';
 import { User } from '../interfaces/users.interface';
 import userModel from '../models/users.model';
 import { isEmpty } from '../utils/util';
+import artistModel from '../models/artists.model';
+import festivalModel from '../models/festivals.model';
 
 class UserService {
   public users = userModel;
+  public artists = artistModel;
+  public festivals = festivalModel;
 
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await this.users.find();
@@ -18,6 +22,15 @@ class UserService {
     if (!findUser) throw new HttpException(409, "You're not user");
 
     return findUser;
+  }
+
+  public async findWishlist(userId: string) {
+    const findWishlist: User = await this.users
+      .findOne({ _id: userId }, 'wishArtists wishFestivals')
+      .populate('wishArtists', 'name image')
+      .populate('wishFestivals', 'name poster');
+    if (!findWishlist) throw new HttpException(409, 'error');
+    return findWishlist;
   }
 
   public async createUser(userData: CreateUserDto): Promise<User> {

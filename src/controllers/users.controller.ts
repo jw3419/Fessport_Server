@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { CreateUserDto } from '../dtos/users.dto';
 import { User } from '../interfaces/users.interface';
 import userService from '../services/users.service';
+import { RequestWithUser } from '../interfaces/auth.interface';
 
 class UsersController {
   public userService = new userService();
@@ -10,6 +11,17 @@ class UsersController {
     try {
       const findAllUsersData: User[] = await this.userService.findAllUser();
       res.status(200).json(findAllUsersData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getWishlist = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const userData: User = req.user;
+
+    try {
+      const findWishlist: User = await this.userService.findWishlist(userData._id);
+      res.status(200).json(findWishlist);
     } catch (error) {
       next(error);
     }
