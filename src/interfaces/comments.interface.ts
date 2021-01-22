@@ -2,10 +2,10 @@ import { User } from './users.interface';
 import { Board } from './boards.interface';
 
 export interface Comment {
-  _id: string;
+  _id?: string;
   description: string;
-  user: User;
-  board: Board;
-  createdAt: Date;
-  updatedAt: Date;
+  user: User | string;
+  board: Board | string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
