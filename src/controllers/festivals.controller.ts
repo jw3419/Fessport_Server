@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import festivalService from '../services/festivals.service';
 import { User } from '../interfaces/users.interface';
-import { RequestWithUser } from '../interfaces/auth.interface';
 import { Festival } from '../interfaces/festivals.interface';
+import { RequestWithUser } from '../interfaces/auth.interface';
 
 class FestivalsController {
   public festivalService = new festivalService();
@@ -17,10 +17,21 @@ class FestivalsController {
   };
 
   public getFestivalByCountryId = async (req: Request, res: Response, next: NextFunction) => {
-    const countryId: string = req.params.id;
+    const countryId: string = req.param('country_id');
 
     try {
       const findFestivalsData: Festival[] = await this.festivalService.findFestivalByCountryId(countryId);
+      res.status(200).json(findFestivalsData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getFestivalByGenreId = async (req: Request, res: Response, next: NextFunction) => {
+    const genreId: string = req.param('genre_id');
+
+    try {
+      const findFestivalsData: Festival[] = await this.festivalService.findFestivalByGenreId(genreId);
       res.status(200).json(findFestivalsData);
     } catch (error) {
       next(error);

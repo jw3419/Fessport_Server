@@ -8,7 +8,6 @@ import FestivalsRoute from './routes/festivals.route';
 import CategoryRoute from './routes/category.route';
 import ArtistsRoute from './routes/artists.route';
 import UsersRoute from './routes/users.route';
-import WishlistRoute from './routes/wishlist.route';
 
 validateEnv();
 
@@ -20,7 +19,6 @@ const app = new App([
   new CategoryRoute(),
   new ArtistsRoute(),
   new UsersRoute(),
-  new WishlistRoute(),
 ]);
 
 app.listen();

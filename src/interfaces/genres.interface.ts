@@ -1,6 +1,6 @@
 export interface Genre {
   _id: string;
-  genre: string;
+  name: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -1,18 +1,16 @@
-import { Festival } from '../interfaces/festivals.interface';
-import festivalModel from '../models/festivals.model';
 import genreModel from '../models/genres.model';
-import countryModel from '../models/countries.model';
+import festivalModel from '../models/festivals.model';
+import { Festival } from '../interfaces/festivals.interface';
 import { User } from '../interfaces/users.interface';
 import { isEmpty } from '../utils/util';
 import HttpException from '../exceptions/HttpException';
 
 class FestivalService {
+  public genres = genreModel;
   public festivals = festivalModel;
-  public country = countryModel;
-  public genre = genreModel;
 
   public async findAllFestival(): Promise<Festival[]> {
-    const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre', 'genre');
+    const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre', 'name');
     return festivals;
   }
 
@@ -21,7 +19,16 @@ class FestivalService {
 
     const findFestivals: Festival[] = await this.festivals
       .find({ country: countryId }, 'name poster genre')
-      .populate('genre', 'genre');
+      .populate('genre', 'name');
+    return findFestivals;
+  }
+
+  public async findFestivalByGenreId(genreId: string): Promise<Festival[]> {
+    if (isEmpty(genreId)) throw new HttpException(400, 'error');
+
+    const findFestivals: Festival[] = await this.festivals
+      .find({ genre: genreId }, 'name poster genre')
+      .populate('genre', 'name');
     return findFestivals;
   }
 
@@ -30,8 +37,8 @@ class FestivalService {
 
     const festival: Festival = await this.festivals
       .findById(festivalId, 'name description artists startDate endDate video poster homepage genre country')
-      .populate('genre', 'genre')
-      .populate('country', 'name flagImage')
+      .populate('genre', 'name')
+      .populate('country', 'name flagImage') // category.service.ts에서 country 모델 public으로 불러오기 때문에 참조 가능
       .populate('artists', 'name image');
     if (!festival) throw new HttpException(409, 'error');
     return festival;

@@ -27,6 +27,17 @@ class UsersController {
     }
   };
 
+  public getMyFessport = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const userData: User = req.user;
+
+    try {
+      const findMyFessport: User = await this.userService.findFessport(userData._id);
+      res.status(200).json(findMyFessport);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getUserById = async (req: Request, res: Response, next: NextFunction) => {
     const userId: string = req.params.id;
 
