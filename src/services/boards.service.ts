@@ -27,14 +27,32 @@ class BoardService {
     return createBoardData;
   }
 
-  public async findBoard(postCategoryId: string): Promise<Board[]> {
+  public async findBoardList(postCategoryId: string): Promise<Board[]> {
     if (isEmpty(postCategoryId)) throw new HttpException(400, 'The post category number was not passed.');
 
-    const board: Board[] = await this.boards
+    const boardList: Board[] = await this.boards
       .find({ postCategory: postCategoryId })
       .populate('user', 'email image')
       .populate('festival', 'name');
-    return board;
+    return boardList;
+  }
+
+  public async updateBoard(boardData): Promise<Board> {
+    console.log(boardData);
+    const { title, description, image } = boardData;
+    const updateBoardData: Board = await this.boards.findByIdAndUpdate(
+      boardData.postId,
+      {
+        title: title,
+        description: description,
+        image: image,
+      },
+      {
+        new: true,
+      },
+    );
+
+    return updateBoardData;
   }
 }
 

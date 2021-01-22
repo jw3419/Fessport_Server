@@ -18,13 +18,26 @@ class BoardsController {
     }
   };
 
-  public findBoard = async (req: Request, res: Response, next: NextFunction) => {
+  public findBoardList = async (req: Request, res: Response, next: NextFunction) => {
     const postCategoryId: string = req.params.postCategoryId;
-    console.log('DDDD: ', postCategoryId);
+
     try {
-      const findBoardData: Board[] = await this.boardService.findBoard(postCategoryId);
+      const findBoardData: Board[] = await this.boardService.findBoardList(postCategoryId);
       res.status(200).json(findBoardData);
-    } catch (error) {}
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updateBoard = async (req: Request, res: Response, next: NextFunction) => {
+    const boardData = req.body;
+
+    try {
+      const updateBoardData: Board = await this.boardService.updateBoard(boardData);
+      res.status(201).json(updateBoardData);
+    } catch (error) {
+      next(error);
+    }
   };
 }
 
