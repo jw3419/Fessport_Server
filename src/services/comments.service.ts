@@ -12,13 +12,11 @@ class CommentService {
   public boards = boardModel;
 
   public async findAllComment(postId): Promise<(string | Comment)[]> {
-    const findBoardData: Board = await this.boards
-      .findById(postId)
-      .populate({
-        path: 'comments',
-        select: 'description user createdAt updatedAt',
-        populate: { path: 'user', select: 'email' },
-      });
+    const findBoardData: Board = await this.boards.findById(postId).populate({
+      path: 'comments',
+      select: 'description user createdAt updatedAt',
+      populate: { path: 'user', select: 'email' },
+    });
 
     return findBoardData.comments;
   }
@@ -37,7 +35,7 @@ class CommentService {
     const createCommentData: Comment = await this.comments.create(preCommentData);
 
     findBoardData.comments.push(createCommentData._id);
-    const updateBoardData: Board = await this.boards.findByIdAndUpdate(board, findBoardData, { new: true });
+    await this.boards.findByIdAndUpdate(board, findBoardData, { new: true });
     const findCommentData: Comment = await this.comments.findById(createCommentData._id).populate('user', 'nickname');
 
     return findCommentData;
