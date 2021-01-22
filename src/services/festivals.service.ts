@@ -30,8 +30,9 @@ class FestivalService {
 
     const festival: Festival = await this.festivals
       .findById(festivalId, 'name description artists startDate endDate video poster homepage genre country')
-      .populate('genre')
-      .populate('country');
+      .populate('genre', 'genre')
+      .populate('country', 'name flagImage')
+      .populate('artists', 'name image');
     if (!festival) throw new HttpException(409, 'error');
     return festival;
   }
