@@ -4,9 +4,12 @@ import HttpException from '../exceptions/HttpException';
 import { User } from '../interfaces/users.interface';
 import userModel from '../models/users.model';
 import { isEmpty } from '../utils/util';
+import { Badge } from '../interfaces/badges.interface';
+import badgeModel from '../models/badges.model';
 
 class UserService {
   public users = userModel;
+  public badges = badgeModel;
 
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await this.users.find();
@@ -29,11 +32,30 @@ class UserService {
     return findWishlist;
   }
 
+  public async findAllBadge(): Promise<Badge[]> {
+    const badges: Badge[] = await this.badges.find({}, 'name image').sort('createdAt');
+    return badges;
+  }
+
   public async findFessport(userId: string): Promise<User> {
-    const findFessport: User = await this.users
+    const fessport: User = await this.users
       .findOne({ _id: userId }, 'email nickname image visits badges')
-      .populate('visits', 'poster')
-      .populate('badges');
+      .populate('visits', 'poster');
+
+    const { _id, email, nickname, image, visits, badges } = fessport;
+    const findFessport = { _id, email, nickname, image, visits, badges: [] };
+    const findBadges: Badge[] = await this.findAllBadge();
+
+    for (let i = 0; i < findBadges.length; i++) {
+      const { _id, name, image } = findBadges[i];
+      findFessport.badges.push({ _id, name, image, get: false });
+      for (let j = 0; j < badges.length; j++) {
+        if (String(badges[j]) === String(findBadges[i]._id)) {
+          findFessport.badges[i].get = true;
+          break;
+        }
+      }
+    }
     return findFessport;
   }
 
@@ -51,10 +73,16 @@ class UserService {
   public async updateUser(userId: string, userData: User): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
 
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const updateUserById: User = await this.users.findByIdAndUpdate(userId, { ...userData, password: hashedPassword });
-    if (!updateUserById) throw new HttpException(409, "You're not user");
+    const { nickname, password, image } = userData;
+    const updateData = { nickname, password, image };
 
+    if (!nickname) delete updateData.nickname;
+    if (!password) delete updateData.password;
+    else updateData.password = await bcrypt.hash(userData.password, 10);
+    if (!image) delete updateData.image;
+
+    const updateUserById: User = await this.users.findByIdAndUpdate(userId, updateData, { new: true });
+    if (!updateUserById) throw new HttpException(409, "You're not user");
     return updateUserById;
   }
 

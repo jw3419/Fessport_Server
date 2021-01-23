@@ -60,8 +60,8 @@ class UsersController {
     }
   };
 
-  public updateUser = async (req: Request, res: Response, next: NextFunction) => {
-    const userId: string = req.params.id;
+  public updateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const userId: string = req.user._id;
     const userData: User = req.body;
 
     try {

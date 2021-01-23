@@ -16,15 +16,11 @@ class UsersRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.usersController.getUsers);
+    this.router.patch(`${this.path}/edit`, authMiddleware, this.usersController.updateUser);
     this.router.get(`${this.path}/myWishlist`, authMiddleware, this.usersController.getWishlist);
     this.router.get(`${this.path}/myFessport`, authMiddleware, this.usersController.getMyFessport);
     this.router.get(`${this.path}/:id`, this.usersController.getUserById);
     this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
-    this.router.put(
-      `${this.path}/:id`,
-      validationMiddleware(CreateUserDto, 'body', true),
-      this.usersController.updateUser,
-    );
     this.router.delete(`${this.path}/:id`, this.usersController.deleteUser);
   }
 }
