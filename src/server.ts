@@ -11,6 +11,7 @@ import UsersRoute from './routes/users.route';
 import FakeDataRoute from './routes/fakeData.route';
 import BoardsRoute from './routes/boards.route';
 import CommentsRoute from './routes/comments.route';
+import LikesRoute from './routes/likes.route';
 
 validateEnv();
 
@@ -27,6 +28,7 @@ const app = new App([
   new CategoryRoute(),
   new ArtistsRoute(),
   new UsersRoute(),
+  new LikesRoute(),
 ]);
 
 app.listen();
