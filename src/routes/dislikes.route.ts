@@ -14,6 +14,7 @@ class DislikesRoute implements Route {
 
   private initializeRoutes() {
     this.router.post(`${this.path}/festival`, authMiddleware, this.dislikesController.dislikeFestival);
+    this.router.post(`${this.path}/artist`, authMiddleware, this.dislikesController.dislikeArtist);
   }
 }
 

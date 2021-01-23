@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import DisLikeService from '../services/dislikes.service';
 import { RequestWithUser } from '../interfaces/auth.interface';
 import { User } from '../interfaces/users.interface';
@@ -11,7 +11,19 @@ class DislikesController {
     const userData: User = req.user;
 
     try {
-      await this.dislikeService.updateWishFestivals(festivalId, userData);
+      await this.dislikeService.updateDislikeFestivals(festivalId, userData);
+      res.sendStatus(200);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public dislikeArtist = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const artistId: string = req.body.artistId;
+    const userData: User = req.user;
+
+    try {
+      await this.dislikeService.updateDislikeArtists(artistId, userData);
       res.sendStatus(200);
     } catch (error) {
       next(error);
