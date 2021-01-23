@@ -40,6 +40,22 @@ class CommentService {
 
     return findCommentData;
   }
+
+  public async updateComment(commentData, userData: User): Promise<Comment> {
+    const { commentId, description } = commentData;
+    const findCommentData: Comment = await this.comments.findById(commentId).populate('user');
+
+    if (userData.email !== findCommentData.user.email)
+      throw new HttpException(400, 'You are not the user who wrote this comment.');
+
+    const updateCommentData: Comment = await this.comments.findByIdAndUpdate(
+      commentId,
+      { description: description },
+      { new: true },
+    );
+
+    return updateCommentData;
+  }
 }
 
 export default CommentService;

@@ -30,6 +30,18 @@ class CommentsController {
       next(error);
     }
   };
+
+  public updateComment = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const commentData = req.body;
+    const userData = req.user;
+
+    try {
+      const updateCommentData: Comment = await this.commentService.updateComment(commentData, userData);
+      res.status(201).json(updateCommentData);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default CommentsController;
