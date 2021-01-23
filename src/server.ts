@@ -13,6 +13,7 @@ import BoardsRoute from './routes/boards.route';
 import CommentsRoute from './routes/comments.route';
 import LikesRoute from './routes/likes.route';
 import DislikesRoute from './routes/dislikes.route';
+import VisitsRoute from './routes/visits.route';
 
 validateEnv();
 
@@ -31,6 +32,7 @@ const app = new App([
   new UsersRoute(),
   new LikesRoute(),
   new DislikesRoute(),
+  new VisitsRoute(),
 ]);
 
 app.listen();
