@@ -12,6 +12,7 @@ import FakeDataRoute from './routes/fakeData.route';
 import BoardsRoute from './routes/boards.route';
 import CommentsRoute from './routes/comments.route';
 import LikesRoute from './routes/likes.route';
+import DislikesRoute from './routes/dislikes.route';
 
 validateEnv();
 
@@ -29,6 +30,7 @@ const app = new App([
   new ArtistsRoute(),
   new UsersRoute(),
   new LikesRoute(),
+  new DislikesRoute(),
 ]);
 
 app.listen();
