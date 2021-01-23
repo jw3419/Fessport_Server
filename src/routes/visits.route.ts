@@ -14,6 +14,7 @@ class VisitsRoute implements Route {
 
   private initializeRoutes() {
     this.router.post(`${this.path}/festival`, authMiddleware, this.visitsController.visitFestival);
+    this.router.post(`${this.path}/cancel`, authMiddleware, this.visitsController.visitCancel);
   }
 }
 

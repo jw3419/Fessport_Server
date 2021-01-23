@@ -17,7 +17,7 @@ class VisitService {
     return festival;
   }
 
-  public async updateUserVisits(festivalId: string, userData: User): Promise<User> {
+  public async updateVisitFestival(festivalId: string, userData: User): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, 'error');
     if (!festivalId) throw new HttpException(409, 'error');
 
@@ -32,6 +32,23 @@ class VisitService {
     );
     await this.badgeService.createVistCountBadge(userData._id);
     return updateUserVisitFestival;
+  }
+
+  public async updateVisitCancel(festivalId: string, userData: User): Promise<User> {
+    if (isEmpty(userData)) throw new HttpException(400, 'error');
+    if (!festivalId) throw new HttpException(409, 'error');
+
+    const visitCancelFestival: Festival = await this.findOneFestivalById(festivalId);
+    if (!visitCancelFestival) throw new HttpException(409, 'error');
+    const updateUserVisitCancel: User = await this.users.findByIdAndUpdate(
+      userData._id,
+      {
+        $pull: { visits: visitCancelFestival._id },
+      },
+      { new: true },
+    );
+    await this.badgeService.createVistCountBadge(userData._id);
+    return updateUserVisitCancel;
   }
 }
 

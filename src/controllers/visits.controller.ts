@@ -11,7 +11,19 @@ class VisitsController {
     const userData: User = req.user;
 
     try {
-      await this.visitService.updateUserVisits(festivalId, userData);
+      await this.visitService.updateVisitFestival(festivalId, userData);
+      res.sendStatus(200);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public visitCancel = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const festivalId: string = req.body.festivalId;
+    const userData: User = req.user;
+
+    try {
+      await this.visitService.updateVisitCancel(festivalId, userData);
       res.sendStatus(200);
     } catch (error) {
       next(error);
