@@ -14,6 +14,7 @@ class LikesRoute implements Route {
 
   private initializeRoutes() {
     this.router.post(`${this.path}/festival`, authMiddleware, this.likesController.likeFestival);
+    this.router.post(`${this.path}/artist`, authMiddleware, this.likesController.likeArtist);
   }
 }
 
