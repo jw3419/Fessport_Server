@@ -5,6 +5,7 @@ import badgeModel from '../models/badges.model';
 import { Festival } from '../interfaces/festivals.interface';
 import { Genre } from '../interfaces/genres.interface';
 import { Badge } from '../interfaces/badges.interface';
+import { Country } from '../interfaces/countries.interface';
 
 class BadgeService {
   public badges = badgeModel;
@@ -18,11 +19,25 @@ class BadgeService {
     const { visits } = user;
 
     let numberOfBadge = 0;
-    if (visits.length === 3) numberOfBadge = 1;
-    else if (visits.length === 6) numberOfBadge = 2;
-    else if (visits.length === 9) numberOfBadge = 3;
-    else if (visits.length === 12) numberOfBadge = 4;
-    else if (visits.length === 15) numberOfBadge = 5;
+    switch (visits.length) {
+      case 3:
+        numberOfBadge = 1;
+        break;
+      case 6:
+        numberOfBadge = 2;
+        break;
+      case 9:
+        numberOfBadge = 3;
+        break;
+      case 12:
+        numberOfBadge = 4;
+        break;
+      case 15:
+        numberOfBadge = 5;
+        break;
+      default:
+        break;
+    }
 
     if (numberOfBadge) {
       const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
@@ -47,11 +62,25 @@ class BadgeService {
     const { visits } = user;
 
     let numberOfBadge = 0;
-    if (visits.length === 2) numberOfBadge = 1;
-    else if (visits.length === 5) numberOfBadge = 2;
-    else if (visits.length === 8) numberOfBadge = 3;
-    else if (visits.length === 11) numberOfBadge = 4;
-    else if (visits.length === 14) numberOfBadge = 5;
+    switch (visits.length) {
+      case 2:
+        numberOfBadge = 1;
+        break;
+      case 5:
+        numberOfBadge = 2;
+        break;
+      case 8:
+        numberOfBadge = 3;
+        break;
+      case 11:
+        numberOfBadge = 4;
+        break;
+      case 14:
+        numberOfBadge = 5;
+        break;
+      default:
+        break;
+    }
 
     if (numberOfBadge) {
       const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
@@ -152,7 +181,107 @@ class BadgeService {
     } else return 'delete any badge';
   }
 
-  //public async createNumberOfCountiresBadge(userId: string): Promise<User> {}
+  public async createNumberOfCountiresBadge(userId: string): Promise<User | string> {
+    if (!userId) throw new HttpException(409, 'error');
+
+    const user: User = await this.users
+      .findById(userId)
+      .populate({ path: 'visits', select: 'country', populate: { path: 'country', select: 'name' } });
+    if (!user) throw new HttpException(409, 'error');
+    const { visits } = user;
+
+    const countryObject = {};
+    while (visits.length) {
+      const country = (<Country>(<Festival>visits.pop()).country).name.toString();
+      if (!countryObject[country]) countryObject[country] = 1;
+    }
+
+    let numberOfBadge = 0;
+    switch (Object.keys(countryObject).length) {
+      case 3:
+        numberOfBadge = 11;
+        break;
+      case 6:
+        numberOfBadge = 12;
+        break;
+      case 9:
+        numberOfBadge = 13;
+        break;
+      case 12:
+        numberOfBadge = 14;
+        break;
+      case 15:
+        numberOfBadge = 15;
+        break;
+      default:
+        break;
+    }
+
+    if (numberOfBadge) {
+      const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
+      if (!badge) throw new HttpException(409, 'error');
+      const updateUserBadge: User = await this.users.findByIdAndUpdate(
+        { _id: userId },
+        {
+          $push: { badges: badge._id },
+        },
+        { new: true },
+      );
+      if (!updateUserBadge) throw new HttpException(409, 'error');
+      return updateUserBadge;
+    } else return 'get any badge';
+  }
+
+  public async deleteNumberOfCountiresBadge(userId: string): Promise<User | string> {
+    if (!userId) throw new HttpException(409, 'error');
+
+    const user: User = await this.users
+      .findById(userId)
+      .populate({ path: 'visits', select: 'country', populate: { path: 'country', select: 'name' } });
+    if (!user) throw new HttpException(409, 'error');
+    const { visits } = user;
+
+    const countryObject = {};
+    while (visits.length) {
+      const country = (<Country>(<Festival>visits.pop()).country).name.toString();
+      if (!countryObject[country]) countryObject[country] = 1;
+    }
+
+    let numberOfBadge = 0;
+    switch (Object.keys(countryObject).length) {
+      case 2:
+        numberOfBadge = 11;
+        break;
+      case 5:
+        numberOfBadge = 12;
+        break;
+      case 8:
+        numberOfBadge = 13;
+        break;
+      case 11:
+        numberOfBadge = 14;
+        break;
+      case 14:
+        numberOfBadge = 15;
+        break;
+      default:
+        break;
+    }
+
+    if (numberOfBadge) {
+      const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
+      if (!badge) throw new HttpException(409, 'error');
+      const updateUserBadge: User = await this.users.findByIdAndUpdate(
+        { _id: userId },
+        {
+          $pull: { badges: badge._id },
+        },
+        { new: true },
+      );
+      if (!updateUserBadge) throw new HttpException(409, 'error');
+      return updateUserBadge;
+    } else return 'delete any badge';
+  }
 }
 
 export default BadgeService;
