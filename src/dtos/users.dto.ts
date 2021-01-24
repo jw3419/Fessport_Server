@@ -11,6 +11,6 @@ export class LoginUserDto {
 export class CreateUserDto extends LoginUserDto {
   @IsString()
   @MinLength(2)
-  @MaxLength(10)
+  @MaxLength(15)
   public nickname: string;
 }

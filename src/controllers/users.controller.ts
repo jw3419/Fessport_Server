@@ -16,7 +16,7 @@ class UsersController {
     }
   };
 
-  public getWishlist = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  public getMyWishlist = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const userData: User = req.user;
 
     try {
@@ -33,6 +33,17 @@ class UsersController {
     try {
       const findMyFessport: User = await this.userService.findFessport(userData._id);
       res.status(200).json(findMyFessport);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMyPosts = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const userData: User = req.user;
+
+    try {
+      const findMyPosts: User = await this.userService.findMyPosts(userData._id);
+      res.status(200).json(findMyPosts);
     } catch (error) {
       next(error);
     }

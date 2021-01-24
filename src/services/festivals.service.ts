@@ -10,7 +10,7 @@ class FestivalService {
   public festivals = festivalModel;
 
   public async findAllFestival(): Promise<Festival[]> {
-    const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre', 'name');
+    const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre country', 'name');
     return festivals;
   }
 

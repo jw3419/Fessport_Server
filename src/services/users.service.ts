@@ -6,10 +6,17 @@ import userModel from '../models/users.model';
 import { isEmpty } from '../utils/util';
 import { Badge } from '../interfaces/badges.interface';
 import badgeModel from '../models/badges.model';
+import { Mypost } from '../interfaces/myposts.interface';
+import { Board } from '../interfaces/boards.interface';
+import boardModel from '../models/boards.model';
+import postCategoryModel from '../models/postCategories.model';
+import { PostCategory } from '../interfaces/postCategories.interface';
 
 class UserService {
+  public boards = boardModel;
   public users = userModel;
   public badges = badgeModel;
+  public postCategory = postCategoryModel;
 
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await this.users.find();
@@ -57,6 +64,26 @@ class UserService {
       }
     }
     return findFessport;
+  }
+
+  public async findMyPosts(userId: string): Promise<Mypost> {
+    if (!userId) throw new HttpException(409, 'error');
+
+    const boards: Board[] = await this.boards
+      .find({ user: userId }, 'title postCategory')
+      .populate('postCategory', 'name');
+    if (isEmpty(boards)) throw new HttpException(409, 'error');
+
+    const findMyPostsdivideOfCateory = {};
+    for (const board of boards) {
+      const { _id, title, postCategory } = board;
+      const categoryName = (<PostCategory>postCategory).name;
+      if (!findMyPostsdivideOfCateory[categoryName]) {
+        findMyPostsdivideOfCateory[categoryName] = [];
+      }
+      findMyPostsdivideOfCateory[categoryName].push({ _id, title });
+    }
+    return findMyPostsdivideOfCateory;
   }
 
   public async createUser(userData: CreateUserDto): Promise<User> {
