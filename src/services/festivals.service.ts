@@ -4,13 +4,18 @@ import { Festival } from '../interfaces/festivals.interface';
 import { User } from '../interfaces/users.interface';
 import { isEmpty } from '../utils/util';
 import HttpException from '../exceptions/HttpException';
+import boardModel from '../models/boards.model';
+import { Board } from '../interfaces/boards.interface';
+import { PostCategory } from '../interfaces/postCategories.interface';
 
 class FestivalService {
   public genres = genreModel;
+  public boards = boardModel;
   public festivals = festivalModel;
 
   public async findAllFestival(): Promise<Festival[]> {
     const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre country', 'name');
+    if (isEmpty(festivals)) throw new HttpException(400, 'error');
     return festivals;
   }
 
@@ -20,6 +25,7 @@ class FestivalService {
     const findFestivals: Festival[] = await this.festivals
       .find({ country: countryId }, 'name poster genre')
       .populate('genre', 'name');
+    if (!findFestivals) throw new HttpException(400, 'error');
     return findFestivals;
   }
 
@@ -29,6 +35,7 @@ class FestivalService {
     const findFestivals: Festival[] = await this.festivals
       .find({ genre: genreId }, 'name poster genre')
       .populate('genre', 'name');
+    if (!findFestivals) throw new HttpException(400, 'error');
     return findFestivals;
   }
 
@@ -50,17 +57,20 @@ class FestivalService {
     const festivalDetail: Festival = await this.findOneFestivalById(festivalId);
     if (!festivalDetail) throw new HttpException(409, 'error');
 
-    // userData가 없다는 것은 로그인 및 인증을 거치지 않은 사용자
-    if (isEmpty(userData)) {
-      return {
-        ...festivalDetail._doc,
-        // 구현 필요
-        companions: ['6007158d433bf3a0fda619ed'],
-        reviews: ['6007158d433bf3a0fda619ed'],
-        resells: ['6007158d433bf3a0fda619ed'],
-      };
+    const boards: Board[] = await this.boards
+      .find({ festival: festivalId }, 'title postCategory user image')
+      .populate('postCategory', 'name')
+      .populate('user', 'nickname');
+
+    const findPostsRelatedToFestivals = { companions: [], reviews: [], resells: [] };
+    for (const board of boards) {
+      const { _id, title, postCategory, user, image } = board;
+      const categoryName = (<PostCategory>postCategory).name;
+      findPostsRelatedToFestivals[categoryName].push({ _id, title, user, image });
     }
 
+    // userData가 없다는 것은 로그인 및 인증을 거치지 않은 사용자
+    if (isEmpty(userData)) return { ...festivalDetail._doc, ...findPostsRelatedToFestivals };
     let isLiked = false;
     if (userData.wishFestivals.length) {
       for (let i = 0; i < userData.wishFestivals.length; i++) {
@@ -70,7 +80,6 @@ class FestivalService {
         }
       }
     }
-
     let visited = false;
     for (let i = 0; i < userData.visits.length; i++) {
       if (String(festivalId) === String(userData.visits[i])) {
@@ -78,16 +87,7 @@ class FestivalService {
         break;
       }
     }
-
-    return {
-      ...festivalDetail._doc,
-      visited,
-      isLiked,
-      // 구현 필요
-      companions: ['6007158d433bf3a0fda619ed'],
-      reviews: ['6007158d433bf3a0fda619ed'],
-      resells: ['6007158d433bf3a0fda619ed'],
-    };
+    return { ...festivalDetail._doc, visited, isLiked, ...findPostsRelatedToFestivals };
   }
 }
 

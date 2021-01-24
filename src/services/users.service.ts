@@ -70,20 +70,17 @@ class UserService {
     if (!userId) throw new HttpException(409, 'error');
 
     const boards: Board[] = await this.boards
-      .find({ user: userId }, 'title postCategory')
-      .populate('postCategory', 'name');
-    if (isEmpty(boards)) throw new HttpException(409, 'error');
+      .find({ user: userId }, 'title postCategory user image')
+      .populate('postCategory', 'name')
+      .populate('user', 'nickname');
 
-    const findMyPostsdivideOfCateory = {};
+    const findMyPostsAndClassify = { companions: [], reviews: [], resells: [] };
     for (const board of boards) {
-      const { _id, title, postCategory } = board;
+      const { _id, title, postCategory, user, image } = board;
       const categoryName = (<PostCategory>postCategory).name;
-      if (!findMyPostsdivideOfCateory[categoryName]) {
-        findMyPostsdivideOfCateory[categoryName] = [];
-      }
-      findMyPostsdivideOfCateory[categoryName].push({ _id, title });
+      findMyPostsAndClassify[categoryName].push({ _id, title, user, image });
     }
-    return findMyPostsdivideOfCateory;
+    return findMyPostsAndClassify;
   }
 
   public async createUser(userData: CreateUserDto): Promise<User> {
