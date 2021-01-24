@@ -12,7 +12,7 @@ class ParticipantsController {
     const { boardId } = req.query;
 
     try {
-      const findParticipantsData: User[] = await this.participantService.findParticipants(boardId);
+      const findParticipantsData: (string | User)[] = await this.participantService.findParticipants(boardId);
       res.status(200).json(findParticipantsData);
     } catch (error) {
       next(error);

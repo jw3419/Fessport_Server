@@ -11,10 +11,11 @@ class ParticipantsService {
   public boards = boardModel;
   public users = userModel;
 
-  public async findParticipants(boardId): Promise<void> {
-    const findBoardData: Board = await this.boards.findById(boardId).populate('participants');
+  public async findParticipants(boardId): Promise<(string | User)[]> {
+    const findBoardData: Board = await this.boards.findById(boardId).populate('participants', 'nickname image');
+    const { participants } = findBoardData;
 
-    console.log(findBoardData);
+    return participants;
   }
   public async createParticipant(boardId, userData: User): Promise<User> {
     if (isEmpty(boardId)) throw new HttpException(400, 'The boardId was not passed.');
