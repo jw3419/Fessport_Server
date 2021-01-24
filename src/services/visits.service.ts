@@ -17,13 +17,17 @@ class VisitService {
     return festival;
   }
 
-  public async updateVisitFestival(festivalId: string, userData: User): Promise<User> {
+  public async updateVisitFestival(festivalId: string, userData: User): Promise<User | string> {
     if (isEmpty(userData)) throw new HttpException(400, 'error');
     if (!festivalId) throw new HttpException(409, 'error');
 
     const visitFestival: Festival = await this.findOneFestivalById(festivalId);
     if (!visitFestival) throw new HttpException(409, 'error');
-    const updateUserVisitFestival: User = await this.users.findByIdAndUpdate(
+    const { visits } = userData;
+    for (const visit of visits) {
+      if (String(visit) === String(visitFestival._id)) return 'already exist';
+    }
+    await this.users.findByIdAndUpdate(
       userData._id,
       {
         $push: { visits: visitFestival._id },
@@ -31,6 +35,11 @@ class VisitService {
       { new: true },
     );
     await this.badgeService.createNumberOfVisitsBadge(userData._id);
+    await this.badgeService.createNumberOfGenresBadge(userData._id);
+    const updateUserVisitFestival: User = await this.users
+      .findById(userData._id, 'badges visits')
+      .populate('badges', 'name')
+      .populate({ path: 'visits', select: 'genre', populate: { path: 'genre', select: 'name' } });
     return updateUserVisitFestival;
   }
 
@@ -40,7 +49,7 @@ class VisitService {
 
     const visitCancelFestival: Festival = await this.findOneFestivalById(festivalId);
     if (!visitCancelFestival) throw new HttpException(409, 'error');
-    const updateUserVisitCancel: User = await this.users.findByIdAndUpdate(
+    await this.users.findByIdAndUpdate(
       userData._id,
       {
         $pull: { visits: visitCancelFestival._id },
@@ -48,6 +57,11 @@ class VisitService {
       { new: true },
     );
     await this.badgeService.deleteNumberOfVisitsBadge(userData._id);
+    await this.badgeService.deleteNumberOfGenresBadge(userData._id);
+    const updateUserVisitCancel: User = await this.users
+      .findById(userData._id, 'badges visits')
+      .populate('badges', 'name')
+      .populate({ path: 'visits', select: 'genre', populate: { path: 'genre', select: 'name' } });
     return updateUserVisitCancel;
   }
 }

@@ -11,8 +11,8 @@ class VisitsController {
     const userData: User = req.user;
 
     try {
-      await this.visitService.updateVisitFestival(festivalId, userData);
-      res.sendStatus(200);
+      const updateUser = await this.visitService.updateVisitFestival(festivalId, userData);
+      res.status(200).json(updateUser);
     } catch (error) {
       next(error);
     }
@@ -23,8 +23,8 @@ class VisitsController {
     const userData: User = req.user;
 
     try {
-      await this.visitService.updateVisitCancel(festivalId, userData);
-      res.sendStatus(200);
+      const updateUser = await this.visitService.updateVisitCancel(festivalId, userData);
+      res.status(200).json(updateUser);
     } catch (error) {
       next(error);
     }
