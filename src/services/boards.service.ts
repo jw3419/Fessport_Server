@@ -15,54 +15,66 @@ class BoardService {
     return festivalCategories;
   }
 
-  public async findBoardList(postCategoryId: string): Promise<Board[]> {
-    if (isEmpty(postCategoryId)) throw new HttpException(400, 'The post category number was not passed.');
+  public async findBoardList(boardCategoryId): Promise<Board[]> {
+    if (isEmpty(boardCategoryId)) throw new HttpException(400, 'The boardCategoryId was not passed.');
 
     const boardList: Board[] = await this.boards
-      .find({ postCategory: postCategoryId })
-      .populate('user', 'email image')
+      .find({ boardCategory: boardCategoryId }, 'title description image user festival createdAt updatedAt')
+      .populate('user', 'nickname image')
       .populate('festival', 'name');
+
     return boardList;
   }
 
-  public async createBoard(data: Board, userData: User): Promise<Board> {
-    if (isEmpty(data)) throw new HttpException(400, "It's not a board data");
+  public async createBoard(boardData, userData: User): Promise<Board> {
+    if (isEmpty(boardData)) throw new HttpException(400, "It's not a board data");
 
-    const boardData = {
-      title: data.title,
-      description: data.description,
-      image: data.image,
+    const preBoardData = {
+      title: boardData.title,
+      description: boardData.description,
+      image: boardData.image,
       user: userData._id,
-      festival: data.festival,
-      postCategory: data.postCategory,
+      festival: boardData.festivalId,
+      boardCategory: boardData.boardCategoryId,
       comments: [],
       participants: [],
     };
 
-    const createBoardData: Board = await this.boards.create(boardData);
+    const createBoardData: Board = await this.boards.create(preBoardData);
     return createBoardData;
   }
 
-  public async updateBoard(boardData): Promise<Board> {
-    const { postId, title, description, image } = boardData;
+  public async updateBoard(boardData, userData: User): Promise<Board> {
+    const { boardId } = boardData;
+    const findBoardData: Board = await this.boards.findById(boardId).populate('user');
+
+    if (userData.email !== findBoardData.user.email)
+      throw new HttpException(400, 'You are not the user who wrote this board.');
 
     const updateBoardData: Board = await this.boards.findByIdAndUpdate(
-      postId,
+      boardId,
       {
-        title: title,
-        description: description,
-        image: image,
+        title: boardData.title,
+        description: boardData.description,
+        image: boardData.image,
       },
       {
         new: true,
       },
     );
 
+    if (!updateBoardData) throw new HttpException(409, 'Fail to update');
+
     return updateBoardData;
   }
 
-  public async deleteBoard(postId: string): Promise<Board> {
-    const deleteBoardData: Board = await this.boards.findByIdAndDelete(postId);
+  public async deleteBoard(boardId, userData: User): Promise<Board> {
+    const findBoardData: Board = await this.boards.findById(boardId).populate('user');
+
+    if (userData.email !== findBoardData.user.email)
+      throw new HttpException(400, 'You are not the user who wrote this board.');
+
+    const deleteBoardData: Board = await this.boards.findByIdAndDelete(boardId);
 
     if (!deleteBoardData) throw new HttpException(409, 'Fail to delete');
     return deleteBoardData;

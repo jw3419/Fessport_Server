@@ -11,32 +11,34 @@ class CommentService {
   public comments = commentModel;
   public boards = boardModel;
 
-  public async findAllComment(postId): Promise<(string | Comment)[]> {
-    const findBoardData: Board = await this.boards.findById(postId).populate({
+  public async findAllComment(boardId): Promise<(string | Comment)[]> {
+    const findBoardData: Board = await this.boards.findById(boardId).populate({
       path: 'comments',
       select: 'description user createdAt updatedAt',
-      populate: { path: 'user', select: 'email' },
+      populate: { path: 'user', select: 'nickname' },
     });
 
     return findBoardData.comments;
   }
 
-  public async createComment(commentData: Comment, userData: User): Promise<Comment> {
-    if (isEmpty(commentData)) throw new HttpException(400, "It's not a comment data");
-    const { board, description } = commentData;
+  public async createComment(commentData, userData: User): Promise<Comment> {
+    if (isEmpty(commentData)) throw new HttpException(400, 'Comment data is empty');
+    const { boardId } = commentData;
 
     const preCommentData = {
-      description: description,
+      description: commentData.description,
       user: userData._id,
-      board: board,
+      board: boardId,
     };
 
-    const findBoardData: Board = await this.boards.findById(board);
+    const findBoardData: Board = await this.boards.findById(boardId);
     const createCommentData: Comment = await this.comments.create(preCommentData);
 
     findBoardData.comments.push(createCommentData._id);
-    await this.boards.findByIdAndUpdate(board, findBoardData, { new: true });
-    const findCommentData: Comment = await this.comments.findById(createCommentData._id).populate('user', 'nickname');
+    await this.boards.findByIdAndUpdate(boardId, findBoardData, { new: true });
+    const findCommentData: Comment = await this.comments
+      .findById(createCommentData._id, 'description user createAt updatedAt')
+      .populate('user', 'nickname');
 
     return findCommentData;
   }
@@ -55,6 +57,17 @@ class CommentService {
     );
 
     return updateCommentData;
+  }
+
+  public async deleteComment(commentId, userData: User): Promise<Comment> {
+    const findCommentData: Comment = await this.comments.findById(commentId).populate('user');
+
+    if (userData.email !== findCommentData.user.email)
+      throw new HttpException(400, 'You are not the user who wrote this comment.');
+
+    const deleteCommentData: Comment = await this.comments.findByIdAndDelete(commentId);
+
+    return deleteCommentData;
   }
 }
 
