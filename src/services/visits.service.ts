@@ -30,7 +30,7 @@ class VisitService {
       },
       { new: true },
     );
-    await this.badgeService.createVistCountBadge(userData._id);
+    await this.badgeService.createNumberOfVisitsBadge(userData._id);
     return updateUserVisitFestival;
   }
 
@@ -47,7 +47,7 @@ class VisitService {
       },
       { new: true },
     );
-    await this.badgeService.createVistCountBadge(userData._id);
+    await this.badgeService.deleteNumberOfVisitsBadge(userData._id);
     return updateUserVisitCancel;
   }
 }
