@@ -3,7 +3,6 @@ import { RequestWithUser } from '../interfaces/auth.interface';
 import participantService from '../services/participants.service';
 
 import { User } from '../interfaces/users.interface';
-import { Board } from '../interfaces/boards.interface';
 
 class ParticipantsController {
   public participantService = new participantService();
@@ -26,6 +25,18 @@ class ParticipantsController {
     try {
       const addedParticipantData: User = await this.participantService.createParticipant(boardId, userData);
       res.status(201).json(addedParticipantData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteParticipant = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const { boardId } = req.body;
+    const userData: User = req.user;
+
+    try {
+      await this.participantService.deleteParticipant(boardId, userData);
+      res.status(201).json({ message: 'delete' });
     } catch (error) {
       next(error);
     }

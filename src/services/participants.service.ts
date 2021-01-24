@@ -1,6 +1,5 @@
 import HttpException from '../exceptions/HttpException';
 import { isEmpty } from '../utils/util';
-import commentModel from '../models/comments.model';
 import boardModel from '../models/boards.model';
 
 import { User } from '../interfaces/users.interface';
@@ -26,6 +25,15 @@ class ParticipantsService {
 
     const findUserData: User = await this.users.findById(userData._id, 'nickname image');
     return findUserData;
+  }
+
+  public async deleteParticipant(boardId, userData: User): Promise<void> {
+    if (isEmpty(boardId)) throw new HttpException(400, 'The boardId was not passed.');
+
+    const findBoardData: Board = await this.boards.findById(boardId);
+    const idx = findBoardData.participants.indexOf(userData._id);
+    findBoardData.participants.splice(idx, 1);
+    await this.boards.findByIdAndUpdate(boardId, findBoardData, { new: true });
   }
 }
 

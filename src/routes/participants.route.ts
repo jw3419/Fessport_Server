@@ -15,7 +15,7 @@ class BoardsRoute implements Route {
   private initializeRoutes() {
     this.router.get(`${this.path}/list`, this.participantsController.getParticipants);
     this.router.post(`${this.path}/create`, authMiddleware, this.participantsController.createParticipant);
-    // this.router.post(`${this.path}/delete`, authMiddleware, this.participantsController.deleteParticipant);
+    this.router.post(`${this.path}/delete`, authMiddleware, this.participantsController.deleteParticipant);
   }
 }
 
