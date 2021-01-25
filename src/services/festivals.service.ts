@@ -6,7 +6,7 @@ import { isEmpty } from '../utils/util';
 import HttpException from '../exceptions/HttpException';
 import boardModel from '../models/boards.model';
 import { Board } from '../interfaces/boards.interface';
-import { PostCategory } from '../interfaces/postCategories.interface';
+import { BoardCategory } from '../interfaces/boardCategories.interface';
 
 class FestivalService {
   public genres = genreModel;
@@ -53,21 +53,21 @@ class FestivalService {
     return festival;
   }
 
-  public async createFestivalDetailData(festivalId: string, userData: User): Promise<Festival> {
+  public async createFestivalDetailData(festivalId, userData: User): Promise<Festival> {
     if (!festivalId) throw new HttpException(400, 'error');
 
     const festivalDetail: Festival = await this.findOneFestivalById(festivalId);
     if (!festivalDetail) throw new HttpException(409, 'error');
 
     const boards: Board[] = await this.boards
-      .find({ festival: festivalId }, 'title postCategory user image')
-      .populate('postCategory', 'name')
+      .find({ festival: festivalId }, 'title boardCategory user image')
+      .populate('boardCategory', 'name')
       .populate('user', 'nickname');
 
     const findPostsRelatedToFestivals = { companions: [], reviews: [], resells: [] };
     for (const board of boards) {
-      const { _id, title, postCategory, user, image } = board;
-      const categoryName = (<PostCategory>postCategory).name;
+      const { _id, title, boardCategory, user, image } = board;
+      const categoryName = (<BoardCategory>boardCategory).name;
       findPostsRelatedToFestivals[categoryName].push({ _id, title, user, image });
     }
 

@@ -17,11 +17,11 @@ class BoardsController {
     }
   };
 
-  public findBoardList = async (req: Request, res: Response, next: NextFunction) => {
-    const postCategoryId: string = req.params.postCategoryId;
+  public getBoardList = async (req: Request, res: Response, next: NextFunction) => {
+    const { boardCategoryId } = req.query;
 
     try {
-      const findBoardData: Board[] = await this.boardService.findBoardList(postCategoryId);
+      const findBoardData: Board[] = await this.boardService.findBoardList(boardCategoryId);
       res.status(200).json(findBoardData);
     } catch (error) {
       next(error);
@@ -29,7 +29,7 @@ class BoardsController {
   };
 
   public createBoard = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    const boardData: Board = req.body;
+    const boardData = req.body;
     const userData: User = req.user;
 
     try {
@@ -40,22 +40,24 @@ class BoardsController {
     }
   };
 
-  public updateBoard = async (req: Request, res: Response, next: NextFunction) => {
+  public updateBoard = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const boardData = req.body;
+    const userData: User = req.user;
 
     try {
-      const updateBoardData: Board = await this.boardService.updateBoard(boardData);
+      const updateBoardData: Board = await this.boardService.updateBoard(boardData, userData);
       res.status(201).json(updateBoardData);
     } catch (error) {
       next(error);
     }
   };
 
-  public deleteBoard = async (req: Request, res: Response, next: NextFunction) => {
-    const postId = req.body.postId;
+  public deleteBoard = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const { boardId } = req.query;
+    const userData: User = req.user;
 
     try {
-      const deleteBoardData: Board = await this.boardService.deleteBoard(postId);
+      const deleteBoardData: Board = await this.boardService.deleteBoard(boardId, userData);
       res.status(201).json(deleteBoardData);
     } catch (error) {
       next(error);

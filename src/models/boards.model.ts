@@ -22,10 +22,10 @@ const boardSchema: Schema = new Schema({
     required: true,
     ref: 'Festival',
   },
-  postCategory: {
+  boardCategory: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'PostCategory',
+    ref: 'BoardCategory',
   },
   comments: [
     {

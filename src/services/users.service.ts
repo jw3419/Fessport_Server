@@ -9,14 +9,14 @@ import badgeModel from '../models/badges.model';
 import { Mypost } from '../interfaces/myposts.interface';
 import { Board } from '../interfaces/boards.interface';
 import boardModel from '../models/boards.model';
-import postCategoryModel from '../models/postCategories.model';
-import { PostCategory } from '../interfaces/postCategories.interface';
+import boardCategoryModel from '../models/boardCategories.model';
+import { BoardCategory } from '../interfaces/boardCategories.interface';
 
 class UserService {
   public boards = boardModel;
   public users = userModel;
   public badges = badgeModel;
-  public postCategory = postCategoryModel;
+  public boardCategory = boardCategoryModel;
 
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await this.users.find();
@@ -66,18 +66,18 @@ class UserService {
     return findFessport;
   }
 
-  public async findMyPosts(userId: string): Promise<Mypost> {
+  public async findMyPosts(userId): Promise<Mypost> {
     if (!userId) throw new HttpException(409, 'error');
 
     const boards: Board[] = await this.boards
-      .find({ user: userId }, 'title postCategory user image')
-      .populate('postCategory', 'name')
+      .find({ user: userId }, 'title boardCategory user image')
+      .populate('boardCategory', 'name')
       .populate('user', 'nickname');
 
     const findMyPostsAndClassify = { companions: [], reviews: [], resells: [] };
     for (const board of boards) {
-      const { _id, title, postCategory, user, image } = board;
-      const categoryName = (<PostCategory>postCategory).name;
+      const { _id, title, boardCategory, user, image } = board;
+      const categoryName = (<BoardCategory>boardCategory).name;
       findMyPostsAndClassify[categoryName].push({ _id, title, user, image });
     }
     return findMyPostsAndClassify;

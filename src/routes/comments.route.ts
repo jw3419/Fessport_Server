@@ -15,6 +15,8 @@ class BoardsRoute implements Route {
   private initializeRoutes() {
     this.router.get(`${this.path}/list`, this.commentsController.getComments);
     this.router.post(`${this.path}/create`, authMiddleware, this.commentsController.createComment);
+    this.router.post(`${this.path}/edit`, authMiddleware, this.commentsController.updateComment);
+    this.router.post(`${this.path}/delete`, authMiddleware, this.commentsController.deleteComment);
   }
 }
 

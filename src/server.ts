@@ -14,6 +14,7 @@ import CommentsRoute from './routes/comments.route';
 import LikesRoute from './routes/likes.route';
 import DislikesRoute from './routes/dislikes.route';
 import VisitsRoute from './routes/visits.route';
+import ParticipantsRoute from './routes/participants.route';
 
 validateEnv();
 
@@ -33,6 +34,7 @@ const app = new App([
   new LikesRoute(),
   new DislikesRoute(),
   new VisitsRoute(),
+  new ParticipantsRoute(),
 ]);
 
 app.listen();
