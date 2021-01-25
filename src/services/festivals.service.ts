@@ -23,8 +23,9 @@ class FestivalService {
     if (isEmpty(countryId)) throw new HttpException(400, 'error');
 
     const findFestivals: Festival[] = await this.festivals
-      .find({ country: countryId }, 'name poster genre')
-      .populate('genre', 'name');
+      .find({ country: countryId }, 'name poster genre country')
+      .populate('genre', 'name')
+      .populate('country', 'name flagImage');
     if (!findFestivals) throw new HttpException(400, 'error');
     return findFestivals;
   }
@@ -34,7 +35,8 @@ class FestivalService {
 
     const findFestivals: Festival[] = await this.festivals
       .find({ genre: genreId }, 'name poster genre')
-      .populate('genre', 'name');
+      .populate('genre', 'name')
+      .populate('country', 'name flagImage');
     if (!findFestivals) throw new HttpException(400, 'error');
     return findFestivals;
   }

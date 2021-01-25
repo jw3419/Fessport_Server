@@ -18,6 +18,7 @@ describe('Testing AuthController', () => {
       const userData: CreateUserDto = {
         email: 'test@email.com',
         password: 'q1w2e3r4!',
+        nickname: 'abc',
       };
 
       const authRoute = new AuthRoute();
@@ -38,6 +39,7 @@ describe('Testing AuthController', () => {
       const userData: CreateUserDto = {
         email: 'test@email.com',
         password: 'q1w2e3r4!',
+        nickname: 'abc',
       };
       process.env.JWT_SECRET = 'jwt_secret';
 
@@ -92,6 +94,7 @@ describe('Testing AuthService', () => {
         const userData: CreateUserDto = {
           email: 'test@email.com',
           password: 'q1w2e3r4!',
+          nickname: 'abc',
         };
 
         const authService = new AuthService();
@@ -109,6 +112,7 @@ describe('Testing AuthService', () => {
         const userData: CreateUserDto = {
           email: 'test@email.com',
           password: 'q1w2e3r4!',
+          nickname: 'abc',
         };
         process.env.JWT_SECRET = 'jwt_secret';
 

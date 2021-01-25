@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dtos/users.dto';
 import { User } from '../interfaces/users.interface';
 import userService from '../services/users.service';
 import { RequestWithUser } from '../interfaces/auth.interface';
+import { Mypost } from '../interfaces/myposts.interface';
 
 class UsersController {
   public userService = new userService();
@@ -42,7 +43,7 @@ class UsersController {
     const userData: User = req.user;
 
     try {
-      const findMyPosts: User = await this.userService.findMyPosts(userData._id);
+      const findMyPosts: Mypost = await this.userService.findMyPosts(userData._id);
       res.status(200).json(findMyPosts);
     } catch (error) {
       next(error);
