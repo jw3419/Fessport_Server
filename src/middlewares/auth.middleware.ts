@@ -23,6 +23,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       }
     } else {
       if (req.url.includes('/festival/detail') || req.url.includes('/artist/detail')) next();
+      else if (req.url.includes('/auth/logout')) next();
       else next(new HttpException(404, 'Authentication token missing'));
     }
   } catch (error) {

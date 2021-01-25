@@ -5,12 +5,25 @@ export class LoginUserDto {
   public email: string;
 
   @IsString()
-  public password: string;
+  public password?: string;
 }
 
 export class CreateUserDto extends LoginUserDto {
   @IsString()
   @MinLength(2)
-  @MaxLength(10)
+  @MaxLength(15)
+  public nickname: string;
+}
+
+export class KakaoUserDto {
+  @IsEmail()
+  public email?: string;
+
+  @IsString()
+  public password?: string;
+
+  @IsString()
+  @MinLength(2)
+  @MaxLength(15)
   public nickname: string;
 }

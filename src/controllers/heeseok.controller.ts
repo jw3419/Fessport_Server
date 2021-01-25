@@ -17,10 +17,10 @@ class InsertDataController {
 
   public insertBoards = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const data = await this.InsertDataService.insertBoards();
-      // res.status(200).json(data);
-      await this.InsertDataService.insertBoards();
-      res.sendStatus(200);
+      const data = await this.InsertDataService.insertBoards();
+      res.status(200).json(data);
+      //await this.InsertDataService.insertBoards();
+      //res.sendStatus(200);
     } catch (error) {
       next(error);
     }

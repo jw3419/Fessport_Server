@@ -4,15 +4,14 @@ import { User } from '../interfaces/users.interface';
 const userSchema: Schema = new Schema({
   email: {
     type: String,
-    required: true,
-    unique: true,
   },
   password: {
     type: String,
-    required: true,
   },
   nickname: {
     type: String,
+    required: true,
+    unique: true,
   },
   image: {
     type: String,
@@ -39,12 +38,6 @@ const userSchema: Schema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Festival',
-    },
-  ],
-  boards: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Board',
     },
   ],
   createdAt: {

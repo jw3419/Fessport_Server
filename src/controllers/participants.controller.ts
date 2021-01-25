@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { RequestWithUser } from '../interfaces/auth.interface';
 import participantService from '../services/participants.service';
-
 import { User } from '../interfaces/users.interface';
 
 class ParticipantsController {

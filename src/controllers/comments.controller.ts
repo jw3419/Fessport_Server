@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { RequestWithUser } from '../interfaces/auth.interface';
 import commentService from '../services/comments.service';
-
 import { Comment } from '../interfaces/comments.interface';
 import { User } from '../interfaces/users.interface';
 

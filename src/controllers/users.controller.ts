@@ -3,6 +3,7 @@ import { CreateUserDto } from '../dtos/users.dto';
 import { User } from '../interfaces/users.interface';
 import userService from '../services/users.service';
 import { RequestWithUser } from '../interfaces/auth.interface';
+import { Mypost } from '../interfaces/myposts.interface';
 
 class UsersController {
   public userService = new userService();
@@ -16,7 +17,7 @@ class UsersController {
     }
   };
 
-  public getWishlist = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  public getMyWishlist = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const userData: User = req.user;
 
     try {
@@ -33,6 +34,17 @@ class UsersController {
     try {
       const findMyFessport: User = await this.userService.findFessport(userData._id);
       res.status(200).json(findMyFessport);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMyPosts = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const userData: User = req.user;
+
+    try {
+      const findMyPosts: Mypost = await this.userService.findMyPosts(userData._id);
+      res.status(200).json(findMyPosts);
     } catch (error) {
       next(error);
     }
@@ -60,8 +72,8 @@ class UsersController {
     }
   };
 
-  public updateUser = async (req: Request, res: Response, next: NextFunction) => {
-    const userId: string = req.params.id;
+  public updateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    const userId: string = req.user._id;
     const userData: User = req.body;
 
     try {
