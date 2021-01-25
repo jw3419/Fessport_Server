@@ -4,8 +4,8 @@ import { Board } from './boards.interface';
 export interface Comment {
   _id?: string;
   description: string;
-  user: User | string;
-  board: Board | string;
+  user: User;
+  board: Board;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -1,4 +1,4 @@
-export interface PostCategory {
+export interface BoardCategory {
   _id: string;
   name: string;
   createdAt: Date;
