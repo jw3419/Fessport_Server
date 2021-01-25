@@ -6,7 +6,7 @@ import { Board } from './boards.interface';
 export interface User {
   _id?: string;
   email?: string;
-  password?: String;
+  password?: string;
   nickname?: string;
   image?: string;
   wishFestivals?: string[] | Festival[];
