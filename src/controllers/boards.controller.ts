@@ -42,7 +42,7 @@ class BoardsController {
 
   public updateBoard = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const boardData = req.body;
-    const userData = req.user;
+    const userData: User = req.user;
 
     try {
       const updateBoardData: Board = await this.boardService.updateBoard(boardData, userData);
@@ -54,7 +54,7 @@ class BoardsController {
 
   public deleteBoard = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const { boardId } = req.query;
-    const userData = req.user;
+    const userData: User = req.user;
 
     try {
       const deleteBoardData: Board = await this.boardService.deleteBoard(boardId, userData);

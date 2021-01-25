@@ -20,7 +20,7 @@ class CommentsController {
   };
 
   public createComment = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    const commentData: Comment = req.body;
+    const commentData = req.body;
     const userData: User = req.user;
 
     try {
@@ -33,7 +33,7 @@ class CommentsController {
 
   public updateComment = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const commentData = req.body;
-    const userData = req.user;
+    const userData: User = req.user;
 
     try {
       const updateCommentData: Comment = await this.commentService.updateComment(commentData, userData);
@@ -45,7 +45,7 @@ class CommentsController {
 
   public deleteComment = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const { commentId } = req.query;
-    const userData = req.user;
+    const userData: User = req.user;
 
     try {
       const deleteCommentData: Comment = await this.commentService.deleteComment(commentId, userData);
