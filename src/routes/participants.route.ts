@@ -3,7 +3,7 @@ import ParticipantsController from '../controllers/participants.controller';
 import Route from '../interfaces/routes.interface';
 import authMiddleware from '../middlewares/auth.middleware';
 
-class BoardsRoute implements Route {
+class ParticipantsRoute implements Route {
   public path = '/participant';
   public router = Router();
   public participantsController = new ParticipantsController();
@@ -19,4 +19,4 @@ class BoardsRoute implements Route {
   }
 }
 
-export default BoardsRoute;
+export default ParticipantsRoute;
