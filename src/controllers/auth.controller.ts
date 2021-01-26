@@ -56,7 +56,7 @@ class AuthController {
 
     try {
       const { cookie } = await this.authService.kakaoLogin(userData); // services의 login 함수를 통해 cookie와 user 정보를 받아온다.
-      res.cookie('Set-Cookie', cookie).cookie('Kakao_Token', kakaoCookie).redirect('http://localhost:3001');
+      res.cookie('Set-Cookie', cookie).cookie('Kakao_Token', kakaoCookie).redirect('http://localhost:3000');
     } catch (error) {
       next(error);
     }
@@ -152,13 +152,12 @@ class AuthController {
     } catch (error) {
       next(error);
     }
-    res.clearCookie('Kakao_Token').clearCookie('Set-Cookie').redirect('http://localhost:3001');
+    res.clearCookie('Kakao_Token').clearCookie('Set-Cookie').status(200).end();
   };
 
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     console.log(req.cookies);
     if (req.cookies.Kakao_Token) {
-      console.log('logout controller');
       this.kakaoUnlinkAndLogout(req, res, next);
       return;
     }
