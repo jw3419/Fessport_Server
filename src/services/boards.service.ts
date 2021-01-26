@@ -19,9 +19,18 @@ class BoardService {
     if (isEmpty(boardCategoryId)) throw new HttpException(400, 'The boardCategoryId was not passed.');
 
     const boardList: Board[] = await this.boards
-      .find({ boardCategory: boardCategoryId }, 'title description image user festival createdAt updatedAt')
+      .find(
+        { boardCategory: boardCategoryId },
+        'title description image user festival comments participants createdAt updatedAt',
+      )
       .populate('user', 'nickname image')
-      .populate('festival', 'name');
+      .populate('festival', 'name')
+      .populate({
+        path: 'comments',
+        select: 'description user createdAt updatedAt',
+        populate: { path: 'user', select: 'nickname' },
+      })
+      .populate('participants', 'nickname image');
 
     return boardList;
   }
