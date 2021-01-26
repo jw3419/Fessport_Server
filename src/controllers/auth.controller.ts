@@ -156,6 +156,7 @@ class AuthController {
   };
 
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    console.log(req.cookies);
     if (req.cookies.Kakao_Token) {
       this.kakaoUnlinkAndLogout(req, res, next);
       return;
