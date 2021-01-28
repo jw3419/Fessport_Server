@@ -10,12 +10,21 @@ import userModel from '../models/users.model';
 const kakao = {
   clientID: process.env.KAKAO_CLIENTID,
   clientSecret: process.env.KAKAO_CLIENTSECRET,
-  redirectUri: 'http://localhost:8000/auth/kakao/callback',
+  redirectUri: 'http://184.72.117.30/auth/kakao/callback',
 };
 
 class AuthController {
   public authService = new AuthService();
   public users = userModel;
+
+  public imageUpload = async (req, res: Response, next: NextFunction) => {
+    const { location } = req.file;
+    try {
+      res.status(200).json(location);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public signUp = async (req: Request, res: Response, next: NextFunction) => {
     const userData: CreateUserDto = req.body;
@@ -56,7 +65,7 @@ class AuthController {
 
     try {
       const { cookie } = await this.authService.kakaoLogin(userData); // services의 login 함수를 통해 cookie와 user 정보를 받아온다.
-      res.cookie('Set-Cookie', cookie).cookie('Kakao_Token', kakaoCookie).redirect('http://localhost:3000');
+      res.cookie('Set-Cookie', cookie).cookie('Kakao_Token', kakaoCookie).redirect('http://localhost:3001');
     } catch (error) {
       next(error);
     }
@@ -156,7 +165,6 @@ class AuthController {
   };
 
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    console.log(req.cookies);
     if (req.cookies.Kakao_Token) {
       this.kakaoUnlinkAndLogout(req, res, next);
       return;
