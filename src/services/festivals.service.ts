@@ -13,13 +13,36 @@ class FestivalService {
   public boards = boardModel;
   public festivals = festivalModel;
 
-  public async findAllFestival(): Promise<Festival[]> {
-    const festivals: Festival[] = await this.festivals.find({}, 'name poster genre').populate('genre country', 'name');
+  public async findAllFestival(offset?, limit?): Promise<Festival[]> {
+    const festivals: Festival[] = await this.festivals
+      .find({}, 'name poster genre, country')
+      .populate('genre', 'name')
+      .populate('country', 'name flagImage');
     if (isEmpty(festivals)) throw new HttpException(400, 'error');
-    return festivals;
+    const total = festivals.length;
+
+    if (offset && limit) {
+      const skip = Number(offset) * Number(limit);
+      const findLimitFestivals: Festival[] = await this.festivals
+        .find({}, 'name poster genre, country')
+        .populate('genre', 'name')
+        .populate('country', 'name flagImage')
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(Number(limit));
+
+      return findLimitFestivals.map(festival => {
+        const { _id, name, poster, genre, country } = festival;
+        return { _id, name, poster, genre, country, total };
+      });
+    } else
+      return festivals.map(festival => {
+        const { _id, name, poster, genre, country } = festival;
+        return { _id, name, poster, genre, country, total };
+      });
   }
 
-  public async findFestivalByCountryId(countryId: string): Promise<Festival[]> {
+  public async findFestivalByCountryId(countryId, offset?, limit?): Promise<Festival[]> {
     if (isEmpty(countryId)) throw new HttpException(400, 'error');
 
     const findFestivals: Festival[] = await this.festivals
@@ -27,18 +50,58 @@ class FestivalService {
       .populate('genre', 'name')
       .populate('country', 'name flagImage');
     if (!findFestivals) throw new HttpException(400, 'error');
-    return findFestivals;
+    const total = findFestivals.length;
+
+    if (offset && limit) {
+      const skip = Number(offset) * Number(limit);
+      const findLimitFestivals: Festival[] = await this.festivals
+        .find({ country: countryId }, 'name poster genre country')
+        .populate('genre', 'name')
+        .populate('country', 'name flagImage')
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(Number(limit));
+
+      return findLimitFestivals.map(festival => {
+        const { _id, name, poster, genre, country } = festival;
+        return { _id, name, poster, genre, country, total };
+      });
+    } else
+      return findFestivals.map(festival => {
+        const { _id, name, poster, genre, country } = festival;
+        return { _id, name, poster, genre, country, total };
+      });
   }
 
-  public async findFestivalByGenreId(genreId: string): Promise<Festival[]> {
+  public async findFestivalByGenreId(genreId, offset?, limit?): Promise<Festival[]> {
     if (isEmpty(genreId)) throw new HttpException(400, 'error');
 
     const findFestivals: Festival[] = await this.festivals
-      .find({ genre: genreId }, 'name poster genre')
+      .find({ genre: genreId }, 'name poster genre country')
       .populate('genre', 'name')
       .populate('country', 'name flagImage');
     if (!findFestivals) throw new HttpException(400, 'error');
-    return findFestivals;
+    const total = findFestivals.length;
+
+    if (offset && limit) {
+      const skip = Number(offset) * Number(limit);
+      const findLimitFestivals: Festival[] = await this.festivals
+        .find({ genre: genreId }, 'name poster genre country')
+        .populate('genre', 'name')
+        .populate('country', 'name flagImage')
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(Number(limit));
+
+      return findLimitFestivals.map(festival => {
+        const { _id, name, poster, genre, country } = festival;
+        return { _id, name, poster, genre, country, total };
+      });
+    } else
+      return findFestivals.map(festival => {
+        const { _id, name, poster, genre, country } = festival;
+        return { _id, name, poster, genre, country, total };
+      });
   }
 
   public async findOneFestivalById(festivalId: string): Promise<Festival> {
@@ -47,7 +110,7 @@ class FestivalService {
     const festival: Festival = await this.festivals
       .findById(festivalId, 'name description artists startDate endDate video poster homepage genre country')
       .populate('genre', 'name')
-      .populate('country', 'name flagImage') // category.service.ts에서 country 모델 public으로 불러오기 때문에 참조 가능
+      .populate('country', 'name flagImage')
       .populate('artists', 'name image');
     if (!festival) throw new HttpException(409, 'error');
     return festival;
@@ -72,7 +135,9 @@ class FestivalService {
     }
 
     // userData가 없다는 것은 로그인 및 인증을 거치지 않은 사용자
-    if (isEmpty(userData)) return { ...festivalDetail._doc, ...findPostsRelatedToFestivals };
+    if (isEmpty(userData))
+      return { ...festivalDetail._doc, ...findPostsRelatedToFestivals, isLiked: false, visited: false };
+
     let isLiked = false;
     if (userData.wishFestivals.length) {
       for (let i = 0; i < userData.wishFestivals.length; i++) {

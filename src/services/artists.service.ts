@@ -7,9 +7,58 @@ import HttpException from '../exceptions/HttpException';
 class ArtistService {
   public artists = artistModel;
 
-  public async findAllArtist(): Promise<Artist[]> {
+  public async findAllArtist(offset?, limit?): Promise<Artist[]> {
     const artists: Artist[] = await this.artists.find({}, 'name image description genre').populate('genre', 'name');
-    return artists;
+    if (isEmpty(artists)) throw new HttpException(400, 'error');
+    const total = artists.length;
+
+    if (offset && limit) {
+      const skip = Number(offset) * Number(limit);
+      const findLimitArtists: Artist[] = await this.artists
+        .find({}, 'name image description genre')
+        .populate('genre', 'name')
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(Number(limit));
+
+      return findLimitArtists.map(artist => {
+        const { _id, name, image, description, genre } = artist;
+        return { _id, name, image, description, genre, total };
+      });
+    } else
+      return artists.map(artist => {
+        const { _id, name, image, description, genre } = artist;
+        return { _id, name, image, description, genre, total };
+      });
+  }
+
+  public async findAritstByGenreId(genreId, offset?, limit?): Promise<Artist[]> {
+    if (isEmpty(genreId)) throw new HttpException(400, 'error');
+
+    const findArtists: Artist[] = await this.artists
+      .find({ genre: genreId }, 'name image description genre')
+      .populate('genre', 'name');
+    if (isEmpty(findArtists)) throw new HttpException(400, 'error');
+    const total = findArtists.length;
+
+    if (offset && limit) {
+      const skip = Number(offset) * Number(limit);
+      const findLimitArtists: Artist[] = await this.artists
+        .find({ genre: genreId }, 'name image description genre')
+        .populate('genre', 'name')
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(Number(limit));
+
+      return findLimitArtists.map(artist => {
+        const { _id, name, image, description, genre } = artist;
+        return { _id, name, image, description, genre, total };
+      });
+    } else
+      return findArtists.map(artist => {
+        const { _id, name, image, description, genre } = artist;
+        return { _id, name, image, description, genre, total };
+      });
   }
 
   public async findOneArtistById(artistId: string): Promise<Artist> {
@@ -17,8 +66,8 @@ class ArtistService {
 
     const artist: Artist = await this.artists
       .findById(artistId, 'name image description video genre festivals')
-      .populate('genre', 'name') // festivals.service.ts에서 genre 모델 public으로 불러와서 참조가능
-      .populate('festivals', 'name poster'); // festivals.service.ts에서 festivals 모델 public으로 불러와서 참조가능
+      .populate('genre', 'name')
+      .populate('festivals', 'name poster');
     if (!artist) throw new HttpException(409, 'error');
     return artist;
   }
@@ -29,10 +78,14 @@ class ArtistService {
     const artistDetail: Artist = await this.findOneArtistById(artistId);
     if (!artistDetail) throw new HttpException(409, 'error');
 
-    // userData가 없다는 것은 로그인 및 인증을 거치지 않은 사용자
-    if (isEmpty(userData)) return artistDetail;
-
     let isLiked = false;
+    // userData가 없다는 것은 로그인 및 인증을 거치지 않은 사용자
+    if (isEmpty(userData))
+      return {
+        ...artistDetail._doc,
+        isLiked,
+      };
+
     if (userData.wishArtists.length) {
       for (let i = 0; i < userData.wishArtists.length; i++) {
         if (String(artistId) === String(userData.wishArtists[i])) {
