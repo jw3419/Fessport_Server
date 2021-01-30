@@ -107,3 +107,6 @@ dist
 # src/utils/heeseokFakeData.ts
 # src/services/heeseok.service.ts
 # src/controllers/heeseok.controller.ts
+
+key.pem
+cert.pem

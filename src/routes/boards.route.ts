@@ -13,7 +13,6 @@ class BoardsRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/category/festival`, this.boardsController.getFestivalCategories);
     this.router.get(`${this.path}/list`, this.boardsController.getBoardList);
     this.router.post(`${this.path}/create`, authMiddleware, this.boardsController.createBoard);
     this.router.post(`${this.path}/edit`, authMiddleware, this.boardsController.updateBoard);
