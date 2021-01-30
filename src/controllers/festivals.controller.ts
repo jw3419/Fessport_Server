@@ -8,8 +8,10 @@ class FestivalsController {
   public festivalService = new festivalService();
 
   public getFestivals = async (req: Request, res: Response, next: NextFunction) => {
+    const { offset, limit } = req.query;
+
     try {
-      const findAllFestivalsData: Festival[] = await this.festivalService.findAllFestival();
+      const findAllFestivalsData: Festival[] = await this.festivalService.findAllFestival(offset, limit);
       res.status(200).json(findAllFestivalsData);
     } catch (error) {
       next(error);
@@ -17,10 +19,14 @@ class FestivalsController {
   };
 
   public getFestivalByCountryId = async (req: Request, res: Response, next: NextFunction) => {
-    const countryId: string = req.param('country_id');
+    const { countryId, offset, limit } = req.query;
 
     try {
-      const findFestivalsData: Festival[] = await this.festivalService.findFestivalByCountryId(countryId);
+      const findFestivalsData: Festival[] = await this.festivalService.findFestivalByCountryId(
+        countryId,
+        offset,
+        limit,
+      );
       res.status(200).json(findFestivalsData);
     } catch (error) {
       next(error);
@@ -28,10 +34,10 @@ class FestivalsController {
   };
 
   public getFestivalByGenreId = async (req: Request, res: Response, next: NextFunction) => {
-    const genreId: string = req.param('genre_id');
+    const { genreId, offset, limit } = req.query;
 
     try {
-      const findFestivalsData: Festival[] = await this.festivalService.findFestivalByGenreId(genreId);
+      const findFestivalsData: Festival[] = await this.festivalService.findFestivalByGenreId(genreId, offset, limit);
       res.status(200).json(findFestivalsData);
     } catch (error) {
       next(error);

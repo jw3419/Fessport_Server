@@ -18,25 +18,22 @@ const festivalSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  video: {
-    type: String,
-    required: true,
-  },
+  video: [
+    {
+      type: String,
+    },
+  ],
   thumbnail: {
     type: String,
-    required: true,
   },
   poster: {
     type: String,
-    required: true,
   },
   homepage: {
     type: String,
-    required: true,
   },
   stamp: {
     type: String,
-    required: true,
   },
   genre: {
     type: Schema.Types.ObjectId,
@@ -51,7 +48,6 @@ const festivalSchema: Schema = new Schema({
   artists: [
     {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'Artist',
     },
   ],

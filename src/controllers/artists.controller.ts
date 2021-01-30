@@ -8,9 +8,22 @@ class ArtistsController {
   public artistService = new ArtistService();
 
   public getArtists = async (req: Request, res: Response, next: NextFunction) => {
+    const { offset, limit } = req.query;
+
     try {
-      const findAllArtistsData: Artist[] = await this.artistService.findAllArtist();
+      const findAllArtistsData: Artist[] = await this.artistService.findAllArtist(offset, limit);
       res.status(200).json(findAllArtistsData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getArtistByGenreId = async (req: Request, res: Response, next: NextFunction) => {
+    const { genreId, offset, limit } = req.query;
+
+    try {
+      const findArtistsData: Artist[] = await this.artistService.findAritstByGenreId(genreId, offset, limit);
+      res.status(200).json(findArtistsData);
     } catch (error) {
       next(error);
     }

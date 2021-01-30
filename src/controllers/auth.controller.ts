@@ -10,12 +10,22 @@ import userModel from '../models/users.model';
 const kakao = {
   clientID: process.env.KAKAO_CLIENTID,
   clientSecret: process.env.KAKAO_CLIENTSECRET,
-  redirectUri: 'http://localhost:8000/auth/kakao/callback',
+  redirectUri: 'https://fessport-server.com/auth/kakao/callback',
 };
 
 class AuthController {
   public authService = new AuthService();
   public users = userModel;
+
+  public imageUpload = async (req, res: Response, next: NextFunction) => {
+    const { location } = req.file;
+
+    try {
+      res.status(200).json(location);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public signUp = async (req: Request, res: Response, next: NextFunction) => {
     const userData: CreateUserDto = req.body;
@@ -156,7 +166,6 @@ class AuthController {
   };
 
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    console.log(req.cookies);
     if (req.cookies.Kakao_Token) {
       this.kakaoUnlinkAndLogout(req, res, next);
       return;

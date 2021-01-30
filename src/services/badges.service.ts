@@ -7,6 +7,14 @@ import { Genre } from '../interfaces/genres.interface';
 import { Badge } from '../interfaces/badges.interface';
 import { Country } from '../interfaces/countries.interface';
 
+const genreBadgeList = {
+  Rock: 'Y2K',
+  HipHop: '정상수',
+  Electronica: '박명수',
+  All: '비주류',
+  Etc: '편견 없으신 분',
+};
+
 class BadgeService {
   public badges = badgeModel;
   public users = userModel;
@@ -18,29 +26,29 @@ class BadgeService {
     if (!user) throw new HttpException(409, 'error');
     const { visits } = user;
 
-    let numberOfBadge = 0;
+    let nameOfBadge = '';
     switch (visits.length) {
       case 3:
-        numberOfBadge = 1;
+        nameOfBadge = '페스티벌 뉴비';
         break;
       case 6:
-        numberOfBadge = 2;
+        nameOfBadge = '페스티벌 입문자';
         break;
       case 9:
-        numberOfBadge = 3;
+        nameOfBadge = '페스티벌 고수';
         break;
       case 12:
-        numberOfBadge = 4;
+        nameOfBadge = '페스티벌 정복자';
         break;
       case 15:
-        numberOfBadge = 5;
+        nameOfBadge = '인생이 축제';
         break;
       default:
         break;
     }
 
-    if (numberOfBadge) {
-      const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
+    if (nameOfBadge) {
+      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge}` });
       if (!badge) throw new HttpException(409, 'error');
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
@@ -61,29 +69,29 @@ class BadgeService {
     if (!user) throw new HttpException(409, 'error');
     const { visits } = user;
 
-    let numberOfBadge = 0;
+    let nameOfBadge = '';
     switch (visits.length) {
       case 2:
-        numberOfBadge = 1;
+        nameOfBadge = '페스티벌 뉴비';
         break;
       case 5:
-        numberOfBadge = 2;
+        nameOfBadge = '페스티벌 입문자';
         break;
       case 8:
-        numberOfBadge = 3;
+        nameOfBadge = '페스티벌 고수';
         break;
       case 11:
-        numberOfBadge = 4;
+        nameOfBadge = '페스티벌 정복자';
         break;
       case 14:
-        numberOfBadge = 5;
+        nameOfBadge = '인생이 축제';
         break;
       default:
         break;
     }
 
-    if (numberOfBadge) {
-      const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
+    if (nameOfBadge) {
+      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge}` });
       if (!badge) throw new HttpException(409, 'error');
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
@@ -119,13 +127,13 @@ class BadgeService {
       let flag = true;
       for (let i = 0; i < badges.length; i++) {
         // 내가 가진 뱃지들 중에서 없는 뱃지만 만들어야함
-        if ((<Badge>badges[i]).name === `${key} Badge`) flag = false;
+        if ((<Badge>badges[i]).name === genreBadgeList[key]) flag = false;
       }
-      if (flag && genreObject[key] === 3) nameOfBadge = key;
+      if (flag && genreObject[key] === 3) nameOfBadge = genreBadgeList[key];
     }
 
     if (nameOfBadge) {
-      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge} Badge` });
+      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge}` });
       if (!badge) throw new HttpException(409, 'error');
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
@@ -161,13 +169,13 @@ class BadgeService {
       let flag = false;
       for (let i = 0; i < badges.length; i++) {
         // 내가 가진 뱃지들 중에서 있는 뱃지만 없애야함
-        if ((<Badge>badges[i]).name === `${key} Badge`) flag = true;
+        if ((<Badge>badges[i]).name === genreBadgeList[key]) flag = true;
       }
-      if (flag && genreObject[key] === 2) nameOfBadge = key;
+      if (flag && genreObject[key] === 2) nameOfBadge = genreBadgeList[key];
     }
 
     if (nameOfBadge) {
-      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge} Badge` });
+      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge}` });
       if (!badge) throw new HttpException(409, 'error');
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
@@ -196,29 +204,29 @@ class BadgeService {
       if (!countryObject[country]) countryObject[country] = 1;
     }
 
-    let numberOfBadge = 0;
+    let nameOfBadge = '';
     switch (Object.keys(countryObject).length) {
       case 3:
-        numberOfBadge = 11;
+        nameOfBadge = '흥선대원국';
         break;
       case 6:
-        numberOfBadge = 12;
+        nameOfBadge = '아시아인';
         break;
       case 9:
-        numberOfBadge = 13;
+        nameOfBadge = '욜로족';
         break;
       case 12:
-        numberOfBadge = 14;
+        nameOfBadge = '여행가';
         break;
       case 15:
-        numberOfBadge = 15;
+        nameOfBadge = '세계 정복';
         break;
       default:
         break;
     }
 
-    if (numberOfBadge) {
-      const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
+    if (nameOfBadge) {
+      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge}` });
       if (!badge) throw new HttpException(409, 'error');
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
@@ -247,29 +255,29 @@ class BadgeService {
       if (!countryObject[country]) countryObject[country] = 1;
     }
 
-    let numberOfBadge = 0;
+    let nameOfBadge = '';
     switch (Object.keys(countryObject).length) {
       case 2:
-        numberOfBadge = 11;
+        nameOfBadge = '흥선대원국';
         break;
       case 5:
-        numberOfBadge = 12;
+        nameOfBadge = '아시아인';
         break;
       case 8:
-        numberOfBadge = 13;
+        nameOfBadge = '욜로족';
         break;
       case 11:
-        numberOfBadge = 14;
+        nameOfBadge = '여행가';
         break;
       case 14:
-        numberOfBadge = 15;
+        nameOfBadge = '세계 정복';
         break;
       default:
         break;
     }
 
-    if (numberOfBadge) {
-      const badge: Badge = await this.badges.findOne({ name: `${numberOfBadge}번 뱃지` });
+    if (nameOfBadge) {
+      const badge: Badge = await this.badges.findOne({ name: `${nameOfBadge}` });
       if (!badge) throw new HttpException(409, 'error');
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },

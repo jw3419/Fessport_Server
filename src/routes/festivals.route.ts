@@ -14,8 +14,8 @@ class FestivalsRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}/list`, (req: Request, res: Response, next: NextFunction) => {
-      if (req.query.genre_id) this.festivalsController.getFestivalByGenreId(req, res, next);
-      else if (req.query.country_id) this.festivalsController.getFestivalByCountryId(req, res, next);
+      if (req.query.genreId) this.festivalsController.getFestivalByGenreId(req, res, next);
+      else if (req.query.countryId) this.festivalsController.getFestivalByCountryId(req, res, next);
       else this.festivalsController.getFestivals(req, res, next);
     });
     this.router.get(`${this.path}/detail/:id`, authMiddleware, this.festivalsController.getFestivalDetailById);
