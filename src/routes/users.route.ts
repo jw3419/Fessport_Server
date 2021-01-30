@@ -15,7 +15,7 @@ class UsersRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/myWishlist`, authMiddleware, this.usersController.getMyWishlist);
+    this.router.get(`${this.path}/wish`, authMiddleware, this.usersController.getMyWishlist);
     this.router.get(`${this.path}/myFessport`, authMiddleware, this.usersController.getMyFessport);
     this.router.patch(`${this.path}/edit`, authMiddleware, this.usersController.updateUser);
     this.router.get(`${this.path}/myPost`, authMiddleware, this.usersController.getMyPosts);

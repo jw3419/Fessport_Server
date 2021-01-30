@@ -15,10 +15,13 @@ class MainRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.mainController.getMaps);
-    this.router.get(`${this.path}/heeseok/users`, this.InsertDataController.insertUsers);
-    this.router.get(`${this.path}/heeseok/boards`, this.InsertDataController.insertBoards);
-    this.router.get(`${this.path}/heeseok/badges`, this.InsertDataController.insertBadges);
-    this.router.get(`${this.path}/heeseok/artists`, this.InsertDataController.insertArtists);
+    //this.router.get(`${this.path}/heeseok/user`, this.InsertDataController.insertUsers);
+    this.router.get(`${this.path}/heeseok/genre`, this.InsertDataController.insertGenres);
+    //this.router.get(`${this.path}/heeseok/board`, this.InsertDataController.insertBoards);
+    this.router.get(`${this.path}/heeseok/badge`, this.InsertDataController.insertBadges);
+    this.router.get(`${this.path}/heeseok/artist`, this.InsertDataController.insertArtists);
+    this.router.get(`${this.path}/heeseok/country`, this.InsertDataController.insertCountries);
+    this.router.get(`${this.path}/heeseok/festival`, this.InsertDataController.insertFestivals);
   }
 }
 

@@ -23,6 +23,7 @@ const upload = multer({
     key: (req, file, cb) => {
       cb(null, file.originalname);
     },
+    limits: { fileSize: 5 * 1024 * 1024 }, // 용량 제한
   }),
 });
 
@@ -39,7 +40,7 @@ class AuthRoute implements Route {
     this.router.post(`/signup`, validationMiddleware(CreateUserDto, 'body'), this.authController.signUp);
     this.router.post(`/login`, validationMiddleware(LoginUserDto, 'body'), this.authController.logIn);
     this.router.post(`/logout`, authMiddleware, this.authController.logOut);
-    this.router.post(`${this.path}/post/img`, upload.single('file'), this.authController.imageUpload);
+    this.router.post(`/imgUpload`, upload.single('img'), this.authController.imageUpload);
     this.router.get(`${this.path}/kakao`, this.authController.kakaoAuth);
     this.router.get(`${this.path}/kakao/callback`, this.authController.kakaoLoginCallback);
   }

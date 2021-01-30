@@ -12,7 +12,7 @@ export interface Festival extends MongoResult {
   description?: string;
   startDate?: string;
   endDate?: string;
-  video?: string;
+  video?: string[];
   thumbnail?: string;
   poster?: string;
   homepage?: string;

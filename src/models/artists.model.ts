@@ -14,10 +14,12 @@ const artistSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  video: {
-    type: String,
-    required: true,
-  },
+  video: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   genre: {
     type: Schema.Types.ObjectId,
     required: true,

@@ -19,6 +19,7 @@ class AuthController {
 
   public imageUpload = async (req, res: Response, next: NextFunction) => {
     const { location } = req.file;
+
     try {
       res.status(200).json(location);
     } catch (error) {

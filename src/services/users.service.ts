@@ -34,7 +34,7 @@ class UserService {
     const findWishlist: User = await this.users
       .findOne({ _id: userId }, 'wishArtists wishFestivals')
       .populate('wishArtists', 'name image')
-      .populate('wishFestivals', 'name poster'); // festivals, artists service에서 public으로 모델 불러오기 때문에 참조 가능
+      .populate('wishFestivals', 'name poster');
     if (!findWishlist) throw new HttpException(409, 'error');
     return findWishlist;
   }
