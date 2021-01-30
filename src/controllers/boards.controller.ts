@@ -8,15 +8,6 @@ import boardService from '../services/boards.service';
 class BoardsController {
   public boardService = new boardService();
 
-  public getFestivalCategories = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const festivalCategoryData: Festival[] = await this.boardService.findAllFestivalCategory();
-      res.status(200).json(festivalCategoryData);
-    } catch (error) {
-      next(error);
-    }
-  };
-
   public getBoardList = async (req: Request, res: Response, next: NextFunction) => {
     const { boardCategoryId } = req.query;
 

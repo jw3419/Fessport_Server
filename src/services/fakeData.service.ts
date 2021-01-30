@@ -9,7 +9,7 @@ import { isEmpty } from '../utils/util';
 class Service {
   public boardCategories = Model; // 바꿔줘야해
 
-  public async create(data: BoardCategory): Promise<BoardCategory> {
+  public async create(data): Promise<BoardCategory> {
     // 바꿔줘야해
     if (isEmpty(data)) throw new HttpException(400, "You're not userData");
 
