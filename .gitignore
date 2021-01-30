@@ -109,8 +109,5 @@ dist
 # src/controllers/heeseok.controller.ts
 
 .DS_Store
-data.js
-src/services/heeseok.service.ts
-src/controllers/heeseok.controller.ts
 key.pem
 cert.pem
