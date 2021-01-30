@@ -4,8 +4,18 @@ import { Country } from '../interfaces/countries.interface';
 import { Genre } from '../interfaces/genres.interface';
 import { Artist } from '../interfaces/artists.interface';
 
+import { Festival } from '../interfaces/festivals.interface';
 class CategoryController {
   public categoryService = new CategoryService();
+
+  public getFestivalCategories = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const festivalCategoryData: Festival[] = await this.categoryService.findAllFestivalCategory();
+      res.status(200).json(festivalCategoryData);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public getCountryNames = async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -3,17 +3,9 @@ import { isEmpty } from '../utils/util';
 import { Board } from '../interfaces/boards.interface';
 import { User } from '../interfaces/users.interface';
 import boardModel from '../models/boards.model';
-import festivalModel from '../models/festivals.model';
-import { Festival } from '../interfaces/festivals.interface';
 
 class BoardService {
   public boards = boardModel;
-  public festivals = festivalModel;
-
-  public async findAllFestivalCategory(): Promise<Festival[]> {
-    const festivalCategories: Festival[] = await this.festivals.find({}, 'name');
-    return festivalCategories;
-  }
 
   public async findBoardList(boardCategoryId): Promise<Board[]> {
     if (isEmpty(boardCategoryId)) throw new HttpException(400, 'The boardCategoryId was not passed.');
@@ -28,9 +20,9 @@ class BoardService {
       .populate({
         path: 'comments',
         select: 'description user createdAt updatedAt',
-        populate: { path: 'user', select: 'nickname' },
+        populate: { path: 'user', select: 'nickname image' },
       })
-      .populate('participants', 'nickname image');
+      .populate('participants', 'nickname');
 
     return boardList;
   }

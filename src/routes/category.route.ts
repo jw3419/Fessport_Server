@@ -12,6 +12,7 @@ class CategoryRoute implements Route {
   }
 
   private initializeRoutes() {
+    this.router.get(`${this.path}/festival`, this.categoryController.getFestivalCategories);
     this.router.get(`${this.path}/country`, this.categoryController.getCountryNames);
     this.router.get(`${this.path}/genre`, this.categoryController.getGenreNames);
     this.router.get(`${this.path}/artist`, this.categoryController.getArtistCategories);

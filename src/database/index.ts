@@ -2,7 +2,7 @@ const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE, MONGO_USERNAME, MONGO_PASSWORD }
 
 export const dbConnection = {
   //url: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?authSource=admin`,
-  url: `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@fessportcluster.olip6.mongodb.net/${MONGO_DATABASE}?retryWrites=true&w=majority`,
+  url: `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@fessport.yawiu.mongodb.net/${MONGO_DATABASE}?retryWrites=true&w=majority`,
   options: {
     useNewUrlParser: true,
     useCreateIndex: true,

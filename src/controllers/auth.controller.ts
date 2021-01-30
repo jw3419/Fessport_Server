@@ -10,7 +10,7 @@ import userModel from '../models/users.model';
 const kakao = {
   clientID: process.env.KAKAO_CLIENTID,
   clientSecret: process.env.KAKAO_CLIENTSECRET,
-  redirectUri: 'http://184.72.117.30/auth/kakao/callback',
+  redirectUri: 'https://fessport-server.com/auth/kakao/callback',
 };
 
 class AuthController {
@@ -66,7 +66,7 @@ class AuthController {
 
     try {
       const { cookie } = await this.authService.kakaoLogin(userData); // services의 login 함수를 통해 cookie와 user 정보를 받아온다.
-      res.cookie('Set-Cookie', cookie).cookie('Kakao_Token', kakaoCookie).redirect('http://localhost:3001');
+      res.cookie('Set-Cookie', cookie).cookie('Kakao_Token', kakaoCookie).redirect('http://localhost:3000');
     } catch (error) {
       next(error);
     }

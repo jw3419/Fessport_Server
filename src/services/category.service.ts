@@ -5,11 +5,19 @@ import { Genre } from '../interfaces/genres.interface';
 import genreModel from '../models/genres.model';
 import artistModel from '../models/artists.model';
 import { Artist } from '../interfaces/artists.interface';
+import { Festival } from '../interfaces/festivals.interface';
+import festivalModel from '../models/festivals.model';
 
 class CategoryService {
   public countries = countryModel;
   public genres = genreModel;
   public artists = artistModel;
+  public festivals = festivalModel;
+
+  public async findAllFestivalCategory(): Promise<Festival[]> {
+    const festivalCategories: Festival[] = await this.festivals.find({}, 'name');
+    return festivalCategories;
+  }
 
   public async findAllCountryName(): Promise<Country[]> {
     const allCountry: Country[] = await this.countries.find({}, 'name');
