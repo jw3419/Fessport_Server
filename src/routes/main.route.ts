@@ -22,6 +22,7 @@ class MainRoute implements Route {
     this.router.get(`${this.path}/heeseok/artist`, this.InsertDataController.insertArtists);
     this.router.get(`${this.path}/heeseok/country`, this.InsertDataController.insertCountries);
     this.router.get(`${this.path}/heeseok/festival`, this.InsertDataController.insertFestivals);
+    this.router.get(`${this.path}/heeseok/boardCategory`, this.InsertDataController.insertBoardCategory);
   }
 }
 

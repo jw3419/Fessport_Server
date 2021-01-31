@@ -1,14 +1,13 @@
 import { Genre } from './genres.interface';
 import { Country } from './countries.interface';
-import { Artist } from './artists.interface';
 
 interface MongoResult {
   _doc?: any;
 }
 
 export interface Festival extends MongoResult {
-  _id: string;
-  name: string;
+  _id?: string;
+  name?: string;
   description?: string;
   startDate?: string;
   endDate?: string;
@@ -19,7 +18,7 @@ export interface Festival extends MongoResult {
   stamp?: string;
   genre?: string | Genre;
   country?: string | Country;
-  artists?: string[] | Artist[];
+  artists?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }

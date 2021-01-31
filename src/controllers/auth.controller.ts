@@ -21,7 +21,7 @@ class AuthController {
     const { location } = req.file;
 
     try {
-      res.status(200).json(location);
+      res.status(200).json({ image: location });
     } catch (error) {
       next(error);
     }
