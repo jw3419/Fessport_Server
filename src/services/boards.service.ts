@@ -22,7 +22,7 @@ class BoardService {
         select: 'description user createdAt updatedAt',
         populate: { path: 'user', select: 'nickname image' },
       })
-      .populate('participants', 'nickname');
+      .populate('participants', 'nickname image');
 
     return boardList;
   }

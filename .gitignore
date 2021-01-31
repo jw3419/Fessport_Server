@@ -105,12 +105,13 @@ dist
 
 # heeseok test file
 # src/utils/heeseokFakeData.ts
-# src/services/heeseok.service.ts
+src/services/heeseok.service.ts
 # src/controllers/heeseok.controller.ts
 
 .DS_Store
 data.js
-src/services/heeseok.service.ts
-src/controllers/heeseok.controller.ts
 key.pem
 cert.pem
+src/services/fakeData.service.ts
+src/routes/fakeData.route.ts
+src/controllers/fakeData.controller.ts

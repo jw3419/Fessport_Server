@@ -13,12 +13,6 @@ import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
 
-// import https from 'https';
-// import fs from 'fs';
-// const privateKey = fs.readFileSync(__dirname + '/../key.pem', 'utf8');
-// const certificate = fs.readFileSync(__dirname + '/../cert.pem', 'utf8');
-// const credentials = { key: privateKey, cert: certificate };
-
 class App {
   public app: express.Application;
   public port: string | number;
@@ -35,16 +29,12 @@ class App {
     this.initializeRoutes(routes);
     this.initializeSwagger();
     this.initializeErrorHandling();
-    // this.httpsServer = https.createServer(credentials, this.app);
   }
 
   public listen() {
     this.app.listen(this.port, () => {
       logger.info(`🚀 App listening on the port ${this.port}`);
     });
-    // this.httpsServer.listen(this.port, () => {
-    //   logger.info(`🚀 App listening on the port ${this.port}`);
-    // });
   }
 
   public getServer() {
