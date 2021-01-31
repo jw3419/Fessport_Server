@@ -111,3 +111,6 @@ dist
 .DS_Store
 key.pem
 cert.pem
+src/services/fakeData.service.ts
+src/routes/fakeData.route.ts
+src/controllers/fakeData.controller.ts
