@@ -38,8 +38,8 @@ class VisitService {
     await this.badgeService.createNumberOfGenresBadge(userData._id);
     await this.badgeService.createNumberOfCountiresBadge(userData._id);
     const updateUserVisitFestival: User = await this.users
-      .findById(userData._id, 'badges visits')
-      .populate('badges', 'name')
+      .findById(userData._id, 'badge visits')
+      .populate('badge', 'name')
       .populate({ path: 'visits', select: 'genre country', populate: { path: 'genre country', select: 'name' } });
     return updateUserVisitFestival;
   }
@@ -61,8 +61,8 @@ class VisitService {
     await this.badgeService.deleteNumberOfGenresBadge(userData._id);
     await this.badgeService.deleteNumberOfCountiresBadge(userData._id);
     const updateUserVisitCancel: User = await this.users
-      .findById(userData._id, 'badges visits')
-      .populate('badges', 'name')
+      .findById(userData._id, 'badge visits')
+      .populate('badge', 'name')
       .populate({ path: 'visits', select: 'genre country', populate: { path: 'genre country', select: 'name' } });
     return updateUserVisitCancel;
   }

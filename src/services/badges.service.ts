@@ -53,7 +53,7 @@ class BadgeService {
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
         {
-          $push: { badges: badge._id },
+          $push: { badge: badge._id },
         },
         { new: true },
       );
@@ -96,7 +96,7 @@ class BadgeService {
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
         {
-          $pull: { badges: badge._id },
+          $pull: { badge: badge._id },
         },
         { new: true },
       );
@@ -111,9 +111,9 @@ class BadgeService {
     const user: User = await this.users
       .findById(userId)
       .populate({ path: 'visits', select: 'genre', populate: { path: 'genre', select: 'name' } })
-      .populate('badges', 'name');
+      .populate('badge', 'name');
     if (!user) throw new HttpException(409, 'error');
-    const { visits, badges } = user;
+    const { visits, badge } = user;
 
     const genreObject = {};
     while (visits.length) {
@@ -125,9 +125,9 @@ class BadgeService {
     let nameOfBadge = '';
     for (const key in genreObject) {
       let flag = true;
-      for (let i = 0; i < badges.length; i++) {
+      for (let i = 0; i < badge.length; i++) {
         // 내가 가진 뱃지들 중에서 없는 뱃지만 만들어야함
-        if ((<Badge>badges[i]).name === genreBadgeList[key]) flag = false;
+        if ((<Badge>badge[i]).name === genreBadgeList[key]) flag = false;
       }
       if (flag && genreObject[key] === 3) nameOfBadge = genreBadgeList[key];
     }
@@ -138,7 +138,7 @@ class BadgeService {
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
         {
-          $push: { badges: badge._id },
+          $push: { badge: badge._id },
         },
         { new: true },
       );
@@ -153,9 +153,9 @@ class BadgeService {
     const user: User = await this.users
       .findById(userId)
       .populate({ path: 'visits', select: 'genre', populate: { path: 'genre', select: 'name' } })
-      .populate('badges', 'name');
+      .populate('badge', 'name');
     if (!user) throw new HttpException(409, 'error');
-    const { visits, badges } = user;
+    const { visits, badge } = user;
 
     const genreObject = {};
     while (visits.length) {
@@ -167,9 +167,9 @@ class BadgeService {
     let nameOfBadge = '';
     for (const key in genreObject) {
       let flag = false;
-      for (let i = 0; i < badges.length; i++) {
+      for (let i = 0; i < badge.length; i++) {
         // 내가 가진 뱃지들 중에서 있는 뱃지만 없애야함
-        if ((<Badge>badges[i]).name === genreBadgeList[key]) flag = true;
+        if ((<Badge>badge[i]).name === genreBadgeList[key]) flag = true;
       }
       if (flag && genreObject[key] === 2) nameOfBadge = genreBadgeList[key];
     }
@@ -180,7 +180,7 @@ class BadgeService {
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
         {
-          $pull: { badges: badge._id },
+          $pull: { badge: badge._id },
         },
         { new: true },
       );
@@ -231,7 +231,7 @@ class BadgeService {
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
         {
-          $push: { badges: badge._id },
+          $push: { badge: badge._id },
         },
         { new: true },
       );
@@ -282,7 +282,7 @@ class BadgeService {
       const updateUserBadge: User = await this.users.findByIdAndUpdate(
         { _id: userId },
         {
-          $pull: { badges: badge._id },
+          $pull: { badge: badge._id },
         },
         { new: true },
       );

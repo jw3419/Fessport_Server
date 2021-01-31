@@ -70,6 +70,15 @@ class InsertDataController {
       next(error);
     }
   };
+
+  public insertBoardCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await this.InsertDataService.insertBoardCategories();
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default InsertDataController;

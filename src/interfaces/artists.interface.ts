@@ -6,7 +6,7 @@ interface MongoResult {
 }
 
 export interface Artist extends MongoResult {
-  _id: string;
+  _id?: string;
   name: string;
   description?: string;
   image?: string;

@@ -37,12 +37,10 @@ const festivalSchema: Schema = new Schema({
   },
   genre: {
     type: Schema.Types.ObjectId,
-    required: true,
     ref: 'Genre',
   },
   country: {
     type: Schema.Types.ObjectId,
-    required: true,
     ref: 'Country',
   },
   artists: [

@@ -10,7 +10,7 @@ export interface User {
   image?: string;
   wishFestivals?: string[] | Festival[];
   wishArtists?: string[] | Artist[];
-  badges?: string[] | Badge[];
+  badge?: string[] | Badge[];
   visits?: string[] | Festival[];
   createdAt?: Date;
   updatedAt?: Date;

@@ -46,19 +46,19 @@ class UserService {
 
   public async findFessport(userId: string): Promise<User> {
     const fessport: User = await this.users
-      .findOne({ _id: userId }, 'email nickname image visits badges')
+      .findOne({ _id: userId }, 'email nickname image visits badge')
       .populate('visits', 'poster');
 
-    const { _id, email, nickname, image, visits, badges } = fessport;
-    const findFessport = { _id, email, nickname, image, visits, badges: [] };
+    const { _id, email, nickname, image, visits, badge } = fessport;
+    const findFessport = { _id, email, nickname, image, visits, badge: [] };
     const findBadges: Badge[] = await this.findAllBadge();
 
     for (let i = 0; i < findBadges.length; i++) {
       const { _id, name, image } = findBadges[i];
-      findFessport.badges.push({ _id, name, image, get: false });
-      for (let j = 0; j < badges.length; j++) {
-        if (String(badges[j]) === String(findBadges[i]._id)) {
-          findFessport.badges[i].get = true;
+      findFessport.badge.push({ _id, name, image, get: false });
+      for (let j = 0; j < badge.length; j++) {
+        if (String(badge[j]) === String(findBadges[i]._id)) {
+          findFessport.badge[i].get = true;
           break;
         }
       }

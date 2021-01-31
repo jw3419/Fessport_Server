@@ -7,8 +7,8 @@ interface MongoResult {
 }
 
 export interface Festival extends MongoResult {
-  _id: string;
-  name: string;
+  _id?: string;
+  name?: string;
   description?: string;
   startDate?: string;
   endDate?: string;
