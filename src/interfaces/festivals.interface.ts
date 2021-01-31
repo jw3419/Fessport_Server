@@ -19,7 +19,7 @@ export interface Festival extends MongoResult {
   stamp?: string;
   genre?: string | Genre;
   country?: string | Country;
-  artists?: string[] | Artist[];
+  artists?: (string | Artist)[];
   createdAt?: Date;
   updatedAt?: Date;
 }
